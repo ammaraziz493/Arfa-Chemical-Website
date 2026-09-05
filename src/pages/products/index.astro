@@ -1,0 +1,110 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { PRODUCTS, CATEGORIES } from '../../data/products.js';
+---
+<Layout
+  title="Our Products — Arfa Chemicals"
+  description="Browse the Arfa Chemicals product range: fertilizers, insecticides, fungicides, seed treatment and biologicals with current indicative prices in PKR."
+>
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb"><a href="/">Home</a> / Products</div>
+      <h1>Our Products</h1>
+      <p>Fertilizers, crop protection and biologicals for every stage of the season. Filter by category or search by name — prices are indicative; contact us for today's rates.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="filters" id="filter-bar" role="group" aria-label="Filter products by category">
+        <button class="fchip on" data-cat="all" type="button">All</button>
+        {CATEGORIES.map((cat) => (
+          <button class="fchip" data-cat={cat.slug} type="button">{cat.name}</button>
+        ))}
+      </div>
+
+      <div class="search-row">
+        <input id="product-search" type="search" placeholder="Search products… (e.g. urea, zinc, fungicide)" aria-label="Search products" />
+      </div>
+
+      <p class="result-count" id="result-count">Showing all {PRODUCTS.length} products</p>
+
+      <div class="grid" id="product-grid">
+        {PRODUCTS.map((p) => <ProductCard product={p} />)}
+      </div>
+
+      <div class="empty" id="empty-state" hidden>No products match your search. Try a different category or keyword.</div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .search-row { max-width: 480px; margin: -8px auto 26px; }
+  .search-row input {
+    width: 100%; padding: 12px 18px; border: 1.5px solid var(--line); border-radius: 999px;
+    font: 400 14.5px 'Inter', sans-serif; background: #fff; transition: border 0.15s;
+  }
+  .search-row input:focus { outline: none; border-color: var(--green); }
+</style>
+
+<script is:inline>
+  (function () {
+    var grid = document.getElementById('product-grid');
+    var chips = Array.prototype.slice.call(document.querySelectorAll('#filter-bar .fchip'));
+    var count = document.getElementById('result-count');
+    var empty = document.getElementById('empty-state');
+    var search = document.getElementById('product-search');
+    if (!grid || !count) return;
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.pcard'));
+    var activeCat = 'all';
+
+    function apply() {
+      var q = (search && search.value.trim().toLowerCase()) || '';
+      var shown = 0;
+      cards.forEach(function (card) {
+        var okCat = activeCat === 'all' || card.dataset.cat === activeCat;
+        var okQ = !q || (card.dataset.name || '').indexOf(q) !== -1;
+        var show = okCat && okQ;
+        card.style.display = show ? '' : 'none';
+        if (show) shown++;
+      });
+      var total = cards.length;
+      count.textContent = q
+        ? 'Showing ' + shown + ' of ' + total + ' products'
+        : activeCat === 'all'
+          ? 'Showing all ' + total + ' products'
+          : 'Showing ' + shown + ' products in this category';
+      if (empty) empty.hidden = shown !== 0;
+    }
+
+    function setPressed() {
+      chips.forEach(function (c) {
+        c.setAttribute('aria-pressed', c.classList.contains('on') ? 'true' : 'false');
+      });
+    }
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        chips.forEach(function (c) { c.classList.remove('on'); });
+        chip.classList.add('on');
+        activeCat = chip.dataset.cat;
+        apply();
+        setPressed();
+      });
+    });
+    setPressed();
+    if (search) search.addEventListener('input', apply);
+
+    // support /products/?cat=<slug> deep links
+    var m = (location.search || '').match(/[?&]cat=([^&]+)/);
+    if (m) {
+      var target = chips.find(function (c) { return c.dataset.cat === m[1]; });
+      if (target) {
+        chips.forEach(function (c) { c.classList.remove('on'); });
+        target.classList.add('on');
+        activeCat = m[1];
+        apply();
+      }
+    }
+  })();
+</script>

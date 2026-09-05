@@ -1,0 +1,20 @@
+{
+  "name": "arfa-chemicals-website",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Arfa Chemicals — crop nutrition & protection product website (static, no backend).",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^5.18.2"
+  },
+  "allowScripts": {
+    "esbuild@0.27.7": true,
+    "esbuild@0.25.12": true,
+    "sharp@0.34.5": true
+  }
+}

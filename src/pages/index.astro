@@ -1,0 +1,165 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import ProductArt from '../components/ProductArt.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { SITE, waLink } from '../data/site.js';
+import { PRODUCTS, CATEGORIES } from '../data/products.js';
+
+const bestSellers = PRODUCTS.filter((p) => p.featured);
+const heroProduct = bestSellers[0];
+const catCount = (slug) => PRODUCTS.filter((p) => p.category === slug).length;
+const WHY = [
+  { icon: 'check', title: 'Genuine, quality inputs', text: 'Every fertilizer and chemical is sourced from reliable manufacturers with proper registration and batch quality.' },
+  { icon: 'sprout', title: 'Crop-specific guidance', text: 'Not sure what to apply? Get practical advice matched to your crop, season and soil conditions.' },
+  { icon: 'pin', title: 'Nationwide dealer network', text: 'A growing network of partner dealers means products and support near your fields.' },
+  { icon: 'chat', title: 'Order on WhatsApp', text: 'Send an order in two minutes — no accounts, no checkout forms, no waiting.' },
+];
+const STEPS = [
+  { icon: 'sprout', title: 'Pick your product', text: 'Browse the catalog by category — fertilizers, insecticides, fungicides, seed treatment or biologicals.' },
+  { icon: 'chat', title: 'Send your order', text: 'Tap "Order on WhatsApp" and your product, pack size and price are already typed out for you.' },
+  { icon: 'truck', title: 'Get delivery & advice', text: 'We confirm availability, arrange supply through your nearest dealer and share application guidance.' },
+];
+---
+<Layout>
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="container">
+      <div>
+        <span class="eyebrow">Crop Nutrition &amp; Protection</span>
+        <h1>Quality agro inputs for <em>healthier harvests</em></h1>
+        <p class="lead">
+          {SITE.name} brings farmers and dealers a dependable range of fertilizers, pesticides
+          and biologicals — backed by honest, crop-specific guidance from people who know the field.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-wa btn-lg" href={waLink('Assalam-o-Alaikum! I would like to know more about Arfa Chemicals products.')} target="_blank" rel="noopener">
+            <Icon name="chat" size={18} /> Order on WhatsApp
+          </a>
+          <a class="btn btn-white btn-lg" href="/products/">Browse Products</a>
+        </div>
+        <div class="hero-trust">
+          <div><span class="dot"><Icon name="check" size={14} /></span> Genuine stock</div>
+          <div><span class="dot"><Icon name="check" size={14} /></span> Farmer &amp; dealer support</div>
+          <div><span class="dot"><Icon name="check" size={14} /></span> Competitive rates</div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-float f1"><span class="fdot"></span>Best Sellers<small>curated every season</small></div>
+        <div class="hero-stage">
+          <ProductArt product={heroProduct} />
+        </div>
+        <div class="hero-float f2"><Icon name="leaf" size={18} /> All Crop Range<small>{PRODUCTS.length} products listed</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CATEGORIES ============ -->
+  <section class="sec-light" id="categories">
+    <div class="container">
+      <div class="sec-head">
+        <div class="kicker">Shop by Category</div>
+        <h2>The complete crop range</h2>
+        <p>From seed treatment at sowing to protection through harvest — every stage of the season is covered.</p>
+      </div>
+      <div class="cat-grid">
+        {CATEGORIES.map((cat) => (
+          <a class="cat-card" href={`/products/?cat=${cat.slug}`}>
+            <div class="cat-top">
+              <span class="cat-dot" style={`background:var(--cat-${cat.slug})`}></span>
+              <h3>{cat.name}</h3>
+            </div>
+            <div class="cnt">{catCount(cat.slug)} products</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BEST SELLERS ============ -->
+  <section class="sec-white">
+    <div class="container">
+      <div class="sec-head">
+        <div class="kicker">Most Ordered</div>
+        <h2>Best sellers this season</h2>
+        <p>Top picks that farmers keep coming back for — with current indicative prices.</p>
+      </div>
+      <div class="grid">
+        {bestSellers.map((p) => <ProductCard product={p} />)}
+      </div>
+      <div class="view-all">
+        <a class="btn btn-blue" href="/products/">View all products →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY US — editorial two-column ============ -->
+  <section class="sec-light">
+    <div class="container">
+      <div class="why-grid">
+        <div class="why-copy">
+          <span class="kicker-left">Why {SITE.name}</span>
+          <h2>More than a product list</h2>
+          <p>
+            We sell inputs — but we stay for the advice, the follow-up and the harvest.
+            That is why dealers and farmers keep coming back season after season.
+          </p>
+          <a class="why-cta" href={waLink('Assalam-o-Alaikum! I need help choosing the right product for my crop.')} target="_blank" rel="noopener">
+            Get product advice on WhatsApp <span aria-hidden="true">→</span>
+          </a>
+        </div>
+        <div class="why-list">
+          {WHY.map((w) => (
+            <div class="why-item">
+              <span class="wic"><Icon name={w.icon} size={24} /></span>
+              <div>
+                <h3>{w.title}</h3>
+                <p>{w.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW TO ORDER ============ -->
+  <section class="sec-brand">
+    <div class="container">
+      <div class="sec-head">
+        <div class="kicker" style="color:#8fe0ab">No account. No checkout. No waiting.</div>
+        <h2 style="color:#fff">How ordering works</h2>
+        <p style="color:#c9ddf0">Buying is a WhatsApp message away — exactly how Pakistani dealers and farmers prefer to work.</p>
+      </div>
+      <div class="steps">
+        {STEPS.map((s) => (
+          <div class="step">
+            <div class="step-head">
+              <span class="sic"><Icon name={s.icon} size={20} /></span>
+              <h3>{s.title}</h3>
+            </div>
+            <p>{s.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section>
+    <div class="container">
+      <div class="cta-band">
+        <div>
+          <h2>Ready to order or need advice?</h2>
+          <p>Talk directly to our team on WhatsApp or call {SITE.phoneDisplay}.</p>
+        </div>
+        <div>
+          <a class="btn btn-white btn-lg" href={waLink('Assalam-o-Alaikum! I need help choosing the right product for my crop.')} target="_blank" rel="noopener">
+            <Icon name="chat" size={18} /> Chat with an expert
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

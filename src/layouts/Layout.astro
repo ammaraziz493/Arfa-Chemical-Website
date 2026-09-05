@@ -1,0 +1,60 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../data/site.js';
+
+const { title, description } = Astro.props;
+const pageTitle = title ?? `${SITE.name} — ${SITE.tagline}`;
+const pageDesc =
+  description ??
+  `${SITE.name} supplies fertilizers, insecticides, fungicides and biologicals with crop-specific guidance for farmers across Pakistan.`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDesc} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="theme-color" content="#0a4a8f" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDesc} />
+    <meta property="og:image" content={new URL('/images/logo.png', Astro.site)} />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: SITE.name,
+      url: Astro.site,
+      logo: new URL('/images/logo.png', Astro.site),
+      description: pageDesc,
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: SITE.phoneDisplay,
+        contactType: 'sales',
+      },
+      address: { '@type': 'PostalAddress', addressLocality: 'Faisalabad', addressCountry: 'PK' },
+    })} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

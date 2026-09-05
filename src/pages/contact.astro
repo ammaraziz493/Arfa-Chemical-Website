@@ -1,0 +1,131 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { SITE, waLink } from '../data/site.js';
+import { CATEGORIES } from '../data/products.js';
+---
+<Layout
+  title="Contact Us — Arfa Chemicals"
+  description="Contact Arfa Chemicals — call, WhatsApp or email us for product availability, prices and dealer information."
+>
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb"><a href="/">Home</a> / Contact</div>
+      <h1>Contact Us</h1>
+      <p>Orders, availability, pricing or dealer inquiries — reach us the way that suits you. We respond during business hours.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="contact-grid">
+        <div>
+          <div class="contact-card">
+            <div class="cic"><Icon name="phone" size={22} /></div>
+            <div>
+              <h3>Call us</h3>
+              <p><a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a></p>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="cic"><Icon name="chat" size={22} /></div>
+            <div>
+              <h3>WhatsApp</h3>
+              <p><a href={waLink('Assalam-o-Alaikum! I would like to know more about Arfa Chemicals products.')} target="_blank" rel="noopener">Chat on {SITE.phoneDisplay}</a></p>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="cic"><Icon name="mail" size={22} /></div>
+            <div>
+              <h3>Email</h3>
+              <p><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="cic"><Icon name="pin" size={22} /></div>
+            <div>
+              <h3>Head office</h3>
+              <p>{SITE.address}</p>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="cic"><Icon name="clock" size={22} /></div>
+            <div>
+              <h3>Business hours</h3>
+              <p>{SITE.hours}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h2>Send us a message</h2>
+          <p style="color:var(--ink-soft); font-size:14.5px">Fill this in and your message opens in WhatsApp — ready to send to our team. No accounts, no server-side storage.</p>
+          <form id="contact-form" data-wa={SITE.whatsapp}>
+            <div class="form-row">
+              <div class="field">
+                <label for="f-name">Full name *</label>
+                <input id="f-name" name="name" type="text" required placeholder="e.g. Muhammad Ahmed" />
+              </div>
+              <div class="field">
+                <label for="f-phone">Phone / WhatsApp *</label>
+                <input id="f-phone" name="phone" type="tel" required placeholder="e.g. 0300 1234567" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="f-city">City / District</label>
+                <input id="f-city" name="city" type="text" placeholder="e.g. Faisalabad" />
+              </div>
+              <div class="field">
+                <label for="f-topic">I'm interested in</label>
+                <select id="f-topic" name="topic">
+                  <option value="General inquiry">General inquiry</option>
+                  {CATEGORIES.map((c) => <option value={c.name}>{c.name}</option>)}
+                  <option value="Become a dealer">Become a dealer</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-msg">Message *</label>
+              <textarea id="f-msg" name="message" required placeholder="Your crop, quantity needed, or any question…"></textarea>
+            </div>
+            <button class="btn btn-wa btn-lg" type="submit" style="width:100%">
+              <Icon name="chat" size={18} /> Send via WhatsApp
+            </button>
+            <p class="form-note">
+              Prefer email? Write to us at <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script is:inline>
+  (function () {
+    var form = document.getElementById('contact-form');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = document.getElementById('f-name').value.trim();
+      var phone = document.getElementById('f-phone').value.trim();
+      var city = document.getElementById('f-city').value.trim();
+      var topic = document.getElementById('f-topic').value;
+      var msg = document.getElementById('f-msg').value.trim();
+      var lines = [
+        'Assalam-o-Alaikum! New inquiry from the Arfa Chemicals website:',
+        '',
+        'Name: ' + name,
+        'Phone: ' + phone,
+        (city ? 'City: ' + city : ''),
+        'Topic: ' + topic,
+        '',
+        'Message: ' + msg,
+      ].filter(Boolean);
+      var waNumber = form.dataset.wa || '923001234567';
+      var url = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(lines.join('\n'));
+      window.open(url, '_blank', 'noopener');
+    });
+  })();
+</script>

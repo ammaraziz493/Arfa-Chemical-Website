@@ -1,0 +1,74 @@
+---
+import Icon from './Icon.astro';
+import { SITE, waLink } from '../data/site.js';
+import { CATEGORIES } from '../data/products.js';
+const year = new Date().getFullYear();
+const cats = CATEGORIES.map((c) => ({ href: `/products/?cat=${c.slug}`, label: c.name }));
+---
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="fabout">
+        <img class="logo-f" src="/images/logo.png" alt={`${SITE.name} logo`} />
+        <p>
+          {SITE.name} supplies quality fertilizers, crop protection and biological products —
+          with practical, crop-specific guidance for farmers and dealers across Pakistan.
+        </p>
+      </div>
+
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/products/">All Products</a></li>
+          <li><a href="/about/">About Us</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Product Range</h4>
+        <ul>
+          {cats.map((c) => (
+            <li><a href={c.href}>{c.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="fcontact">
+        <h4>Get in Touch</h4>
+        <p><Icon name="phone" size={15} /><a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a></p>
+        <p><Icon name="chat" size={15} /><a href={waLink('Assalam-o-Alaikum! I would like to know more about Arfa Chemicals products.')} target="_blank" rel="noopener">WhatsApp us</a></p>
+        <p><Icon name="mail" size={15} /><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+        <p><Icon name="pin" size={15} /><span>{SITE.address}</span></p>
+        <p><Icon name="clock" size={15} /><span>{SITE.hours}</span></p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <span>© {year} {SITE.name}. All rights reserved.</span>
+      <span>Prices shown are indicative — contact us for current rates.</span>
+    </div>
+  </div>
+</footer>
+
+<a
+  class="wa-float"
+  href={waLink('Assalam-o-Alaikum! I would like to know more about Arfa Chemicals products.')}
+  target="_blank"
+  rel="noopener"
+  aria-label="Order on WhatsApp"
+  title="Order on WhatsApp"
+><Icon name="chat" size={26} /></a>
+
+<style>
+  .wa-float {
+    position: fixed; right: 22px; bottom: 22px; z-index: 80;
+    width: 58px; height: 58px; border-radius: 50%;
+    background: #22a34a; color: #fff; display: grid; place-items: center;
+    box-shadow: 0 10px 30px rgba(18, 140, 60, 0.45);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+  .wa-float:hover { background: #1a8740; color: #fff; transform: translateY(-3px) scale(1.04); }
+</style>

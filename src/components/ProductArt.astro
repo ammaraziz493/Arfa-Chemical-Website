@@ -1,0 +1,87 @@
+---
+// ProductArt — stylized product pouch artwork (pure SVG, category-colored)
+// Each product gets a unique gradient so cards look distinct without photos.
+const { product } = Astro.props;
+
+const CAT_COLORS = {
+  fertilizers: { a: '#2e8b2f', b: '#48a820' },
+  insecticides: { a: '#c2571b', b: '#e07b2f' },
+  fungicides: { a: '#0a4a8f', b: '#1f6fbf' },
+  'seed-treatment': { a: '#0f766e', b: '#14b8a6' },
+  biologicals: { a: '#4d7c0f', b: '#7cb31e' },
+};
+const c = CAT_COLORS[product.category] ?? CAT_COLORS.fertilizers;
+const gid = `grad-${product.slug}`;
+
+// Label text = product name without the leading brand word
+const short = product.name.replace(/^Arfa\s+/i, '');
+const words = short.split(' ');
+const lines = [];
+let cur = '';
+for (const w of words) {
+  if (!cur) cur = w;
+  else if ((cur + ' ' + w).length <= 14) cur += ' ' + w;
+  else {
+    lines.push(cur);
+    cur = w;
+  }
+}
+if (cur) lines.push(cur);
+const used = lines.slice(0, 3);
+
+// font size shrinks for longer lines, capped by line count
+const maxLen = Math.max(...used.map((l) => l.length));
+const base = used.length === 1 ? 26 : used.length === 2 ? 19 : 15.5;
+const fs = Math.min(base, Math.floor(132 / (maxLen * 0.58)));
+const adv = fs * 1.18;
+const startY = 170 - ((used.length - 1) * adv) / 2;
+const yLast = startY + (used.length - 1) * adv;
+const dividerY = yLast + fs * 0.8;
+const brandY = dividerY + 13;
+---
+<svg viewBox="0 0 400 300" role="img" aria-label={product.name}>
+  <defs>
+    <linearGradient id={gid} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color={c.a} />
+      <stop offset="1" stop-color={c.b} />
+    </linearGradient>
+  </defs>
+
+  <!-- soft category-tinted backdrop -->
+  <rect width="400" height="300" fill={c.a} opacity="0.07" />
+  <circle cx="62" cy="52" r="95" fill={c.a} opacity="0.10" />
+  <circle cx="352" cy="252" r="115" fill={c.b} opacity="0.10" />
+  <ellipse cx="200" cy="266" rx="82" ry="9" fill="#001a0d" opacity="0.07" />
+
+  <g>
+    <!-- pouch body -->
+    <rect x="118" y="74" width="164" height="178" rx="18" fill={`url(#${gid})`} />
+    <rect x="118" y="74" width="164" height="44" rx="13" fill="#ffffff" opacity="0.18" />
+    <rect x="262" y="96" width="11" height="140" rx="5.5" fill="#ffffff" opacity="0.12" />
+
+    <!-- label -->
+    <rect x="126" y="126" width="148" height="112" rx="12" fill="#ffffff" fill-opacity="0.97" />
+    {used.map((ln, i) => (
+      <text
+        x="200"
+        y={Math.round(startY + i * adv)}
+        text-anchor="middle"
+        font-family="Manrope, Inter, Arial, sans-serif"
+        font-size={fs}
+        font-weight="700"
+        fill="#16324b"
+      >{ln}</text>
+    ))}
+    <line x1="162" y1={Math.round(dividerY)} x2="238" y2={Math.round(dividerY)} stroke="#d9e5df" stroke-width="1.5" />
+    <text
+      x="200"
+      y={Math.round(brandY)}
+      text-anchor="middle"
+      font-family="Inter, Arial, sans-serif"
+      font-size="8.5"
+      font-weight="700"
+      letter-spacing="3"
+      fill={c.b}
+    >ARFA CHEMICALS</text>
+  </g>
+</svg>

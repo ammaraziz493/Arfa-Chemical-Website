@@ -1,0 +1,83 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { SITE, waLink } from '../data/site.js';
+const VALUES = [
+  { icon: 'sprout', title: 'Farmer-first', text: 'Every product and every piece of advice exists to make the farmer’s season simpler and more profitable.' },
+  { icon: 'check', title: 'Quality & honesty', text: 'We stock genuine, properly registered inputs — and we tell you when a product isn’t right for your crop.' },
+  { icon: 'chat', title: 'Long-term relationships', text: 'Dealers and growers work with us season after season because we answer the phone and stand behind the stock.' },
+];
+---
+<Layout
+  title="About Us — Arfa Chemicals"
+  description="Arfa Chemicals supplies genuine fertilizers, crop protection and biologicals to farmers and dealers across Pakistan, with crop-specific guidance."
+>
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb"><a href="/">Home</a> / About Us</div>
+      <h1>About {SITE.name}</h1>
+      <p>Genuine inputs, honest guidance and a team that understands the crop calendar — not just the catalogue.</p>
+    </div>
+  </section>
+
+  <section class="sec-white">
+    <div class="container">
+      <div class="about-grid">
+        <div>
+          <h2>Serving growers and dealers with products that work</h2>
+          <p>
+            {SITE.name} is an agro-input supply house built around one idea: a farmer should never be
+            unsure whether a product is genuine, or how and when to use it. We source fertilizers,
+            crop protection and biological products from reliable manufacturers, and we make sure the
+            person selling them to you knows the difference they make in the field.
+          </p>
+          <p>
+            From seed treatment at sowing time to fungicide timing at flag-leaf, our team works with
+            wheat, rice, cotton, sugarcane, maize, vegetables and orchards — matching the right input
+            to the crop, the season and the soil.
+          </p>
+          <p>
+            Whether you are a farmer buying for one acre or a dealer stocking for a whole district,
+            you deal directly with people who answer on WhatsApp and follow up after the season.
+          </p>
+        </div>
+        <div class="about-panel">
+          <h3>What we stand for</h3>
+          <ul>
+            <li>Genuine, registered, quality-assured products only</li>
+            <li>Advice matched to crop, season and local conditions</li>
+            <li>Fair, transparent, market-based pricing</li>
+            <li>Reliable supply through our partner dealer network</li>
+            <li>After-sale support — not just a sale receipt</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pillars">
+        {VALUES.map((v) => (
+          <div class="pillar">
+            <div class="pic"><Icon name={v.icon} size={26} /></div>
+            <h3>{v.title}</h3>
+            <p>{v.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="cta-band">
+        <div>
+          <h2>Talk to our team</h2>
+          <p>Questions about products, dosage or becoming a dealer? We reply fast.</p>
+        </div>
+        <div>
+          <a class="btn btn-white btn-lg" href={waLink('Assalam-o-Alaikum! I would like to talk to the Arfa Chemicals team.')} target="_blank" rel="noopener">
+            <Icon name="chat" size={18} /> Start a conversation
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,82 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import ProductArt from '../../components/ProductArt.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { PRODUCTS, relatedProducts, fmtPrice, catLabel, CATEGORIES } from '../../data/products.js';
+import { SITE, waLink, WA_ORDER_TEXT } from '../../data/site.js';
+
+export function getStaticPaths() {
+  return PRODUCTS.map((p) => ({ params: { slug: p.slug }, props: { product: p } }));
+}
+
+const { product } = Astro.props;
+const related = relatedProducts(product);
+const cat = CATEGORIES.find((c) => c.slug === product.category);
+---
+<Layout
+  title={`${product.name} (${product.pack}) — Arfa Chemicals`}
+  description={product.short}
+>
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/">Home</a> / <a href="/products/">Products</a> / <a href={`/products/?cat=${product.category}`}>{cat?.name}</a>
+      </div>
+      <h1>{product.name}</h1>
+      <p>{product.short}</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="pd-grid">
+        <div class="pd-art">
+          <ProductArt product={product} />
+        </div>
+
+        <div class="pd-info">
+          <span class="cat-chip">{catLabel(product.category)}</span>
+          <h1>{product.name}</h1>
+          <p class="lead">{product.short}</p>
+
+          <div class="price-row">
+            <span class="big">{fmtPrice(product.price)}</span>
+            <span class="pack">per {product.pack}</span>
+          </div>
+
+          <div class="pd-btns">
+            <a class="btn btn-wa btn-lg" href={waLink(WA_ORDER_TEXT(product))} target="_blank" rel="noopener">
+              <Icon name="chat" size={18} /> Order on WhatsApp
+            </a>
+            <a class="btn btn-outline btn-lg" href={`tel:${SITE.phoneHref}`}>
+              <Icon name="phone" size={18} /> Call to order
+            </a>
+          </div>
+
+          <h2>Key benefits</h2>
+          <ul class="pd-list">
+            {product.description.map((d) => <li>{d}</li>)}
+          </ul>
+
+          <h2>Suitable for</h2>
+          <div class="crop-chips">
+            {product.crops.map((cr) => <span>{cr}</span>)}
+          </div>
+
+          <div class="note-box">
+            <strong>Note:</strong> Prices shown are indicative and may change with market rates.
+            Always confirm dosage and compatibility with our team or your local dealer before application.
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-40">
+        <h2 style="color:var(--blue-deep); font-size:26px">You may also like</h2>
+        <div class="grid grid-3" style="margin-top:22px">
+          {related.map((p) => <ProductCard product={p} />)}
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
