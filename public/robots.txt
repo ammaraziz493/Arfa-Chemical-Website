@@ -1,0 +1,7 @@
+# Arfa Chemicals — robots.txt
+# Allow all crawlers; sitemap location for Google/Bing.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://arfachemicals.dpdns.org/sitemap-index.xml

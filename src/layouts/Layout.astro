@@ -8,7 +8,7 @@ const { title, description } = Astro.props;
 const pageTitle = title ?? `${SITE.name} — ${SITE.tagline}`;
 const pageDesc =
   description ??
-  `${SITE.name} is a plant science company — importing and distributing crop protection products and seeds with practical, crop-specific guidance for growers across Pakistan.`;
+  `${SITE.name}, Multan — a plant science company importing and distributing crop protection products (insecticides, fungicides, herbicides) and seeds across Pakistan. Order on WhatsApp ${SITE.phoneDisplay}.`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 <!doctype html>
@@ -37,17 +37,33 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
-      '@type': 'Organization',
+      '@type': ['Organization', 'LocalBusiness'],
       name: SITE.name,
       url: Astro.site,
       logo: new URL('/images/logo.png', Astro.site),
+      image: new URL('/images/logo.png', Astro.site),
       description: pageDesc,
+      telephone: SITE.phoneDisplay,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'China Chowk Industrial Estate',
+        addressLocality: 'Multan',
+        addressRegion: 'Punjab',
+        addressCountry: 'PK',
+      },
+      areaServed: 'PK',
+      openingHoursSpecification: {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        opens: '09:00',
+        closes: '19:00',
+      },
       contactPoint: {
         '@type': 'ContactPoint',
         telephone: SITE.phoneDisplay,
         contactType: 'sales',
+        availableLanguage: ['en', 'ur'],
       },
-      address: { '@type': 'PostalAddress', addressLocality: 'Faisalabad', addressCountry: 'PK' },
     })} />
   </head>
   <body>
