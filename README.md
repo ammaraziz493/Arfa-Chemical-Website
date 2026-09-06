@@ -13,11 +13,18 @@ green accents) is derived from the logo.
 ## ⚠️ Sample data — replace before going live
 
 - **Products** in `src/data/products.js` are realistic **placeholders** (names, packs, prices,
-  descriptions). Replace with Arfa Chemicals' real range.
-- **Contact details** (WhatsApp number, phone, email, address, hours) in `src/data/site.js`
-  are placeholders — set `whatsapp` to the real number (international digits only).
-- **About page copy** and homepage marketing text are drafts to be reviewed.
-- Prices shown as "indicative" — keep that disclaimer unless you guarantee rates.
+  descriptions). The real business is **crop protection (insecticides / fungicides / herbicides)
+  + seeds** — replace the sample catalog with the actual product range, adding a Herbicides and
+  Seeds category in `CATEGORIES` as needed.
+- **Email** (`info@arfachemicals.pk`) is a placeholder — confirm the real address or the site
+  shows a dead inbox link.
+- Homepage marketing copy is drafted copy to review.
+
+### Real details already set (verified)
+- Call & WhatsApp: **0324 5764838** (`+92 324 5764838`)
+- Address: **China Chowk Industrial Estate, Multan**
+- About page: built from the company profile (incorporated 2025, unlisted public company,
+  import & sale of agricultural products, crop protection + seeds distribution).
 
 ## Project structure
 

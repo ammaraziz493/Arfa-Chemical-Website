@@ -3,57 +3,91 @@ import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import { SITE, waLink } from '../data/site.js';
 const VALUES = [
-  { icon: 'sprout', title: 'Farmer-first', text: 'Every product and every piece of advice exists to make the farmer’s season simpler and more profitable.' },
-  { icon: 'check', title: 'Quality & honesty', text: 'We stock genuine, properly registered inputs — and we tell you when a product isn’t right for your crop.' },
-  { icon: 'chat', title: 'Long-term relationships', text: 'Dealers and growers work with us season after season because we answer the phone and stand behind the stock.' },
+  { icon: 'leaf', title: 'Sustainable agriculture', text: 'Committed to rescuing land from degradation, enhancing biodiversity and revitalizing rural communities.' },
+  { icon: 'sprout', title: 'Innovation & research', text: 'Applying world-class science and innovative crop solutions to transform how crops are grown — from weeds, insects and disease to the effects of heat and cold.' },
+  { icon: 'chat', title: 'Grower-first', text: 'We look at agriculture through the eyes of growers, helping farmers make better use of available resources, season after season.' },
 ];
 ---
 <Layout
   title="About Us — Arfa Chemicals"
-  description="Arfa Chemicals supplies genuine fertilizers, crop protection and biologicals to farmers and dealers across Pakistan, with crop-specific guidance."
+  description="Arfa Chemicals — a plant science company incorporated in 2025, importing and distributing crop protection products and seeds across Pakistan."
 >
   <section class="page-hero">
     <div class="container">
       <div class="breadcrumb"><a href="/">Home</a> / About Us</div>
       <h1>About {SITE.name}</h1>
-      <p>Genuine inputs, honest guidance and a team that understands the crop calendar — not just the catalogue.</p>
+      <p>A plant science company committed to sustainable agriculture — importing and distributing crop protection products and seeds for growers across Pakistan.</p>
     </div>
   </section>
 
+  <!-- ============ WHO WE ARE ============ -->
   <section class="sec-white">
     <div class="container">
       <div class="about-grid">
         <div>
-          <h2>Serving growers and dealers with products that work</h2>
+          <span class="kicker-left">Company profile</span>
+          <h2>Science for sustainable agriculture</h2>
           <p>
-            {SITE.name} is an agro-input supply house built around one idea: a farmer should never be
-            unsure whether a product is genuine, or how and when to use it. We source fertilizers,
-            crop protection and biological products from reliable manufacturers, and we make sure the
-            person selling them to you knows the difference they make in the field.
+            Arfa Chemicals was <strong>incorporated in 2025</strong> as an unlisted public company.
+            The principal activities of the company comprise the <strong>import and sale of
+            agricultural products</strong>, and we are engaged in the distribution and sale of
+            crop protection products alongside the seeds business.
           </p>
           <p>
-            From seed treatment at sowing time to fungicide timing at flag-leaf, our team works with
-            wheat, rice, cotton, sugarcane, maize, vegetables and orchards — matching the right input
-            to the crop, the season and the soil.
+            Through world-class science and innovative crop solutions, our people are working to
+            transform how crops are grown. We are committed to rescuing land from degradation,
+            enhancing biodiversity and revitalizing rural communities — helping to improve food
+            security by enabling farmers to make better use of available resources.
           </p>
           <p>
-            Whether you are a farmer buying for one acre or a dealer stocking for a whole district,
-            you deal directly with people who answer on WhatsApp and follow up after the season.
+            We provide products and solutions that help farmers achieve food security for a growing
+            population, sustainably. We look at agriculture through the eyes of growers, and apply
+            that understanding to every product we import and every recommendation we make.
           </p>
         </div>
         <div class="about-panel">
-          <h3>What we stand for</h3>
-          <ul>
-            <li>Genuine, registered, quality-assured products only</li>
-            <li>Advice matched to crop, season and local conditions</li>
-            <li>Fair, transparent, market-based pricing</li>
-            <li>Reliable supply through our partner dealer network</li>
-            <li>After-sale support — not just a sale receipt</li>
-          </ul>
+          <h3>Vision &amp; Mission</h3>
+          <p style="color:#d3e4f5; font-size:14.5px">
+            Arfa Chemicals is a plant science company committed to promoting sustainable
+            agriculture through innovation, research and technology. Our aim is to help feed a
+            growing population by bringing plant potential to life.
+          </p>
+          <h3 style="margin-top:22px">Our Ambition</h3>
+          <p style="color:#d3e4f5; font-size:14.5px">
+            To bring greater food security — in an environmentally sustainable way — to an
+            increasingly populous world, by creating a step change in farm productivity.
+          </p>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="pillars">
+  <!-- ============ WHAT WE SUPPLY ============ -->
+  <section class="sec-light">
+    <div class="container">
+      <div class="sec-head">
+        <div class="kicker">What we supply</div>
+        <h2>Crop protection products &amp; seeds</h2>
+        <p>
+          Our crop protection range comprises <strong>insecticides</strong> for control of pests
+          affecting food and cash crops, <strong>fungicides</strong> against plant diseases and
+          <strong>herbicides</strong> for weed control, particularly in food crops. With a broad
+          range of safe and efficient products, we improve crop yield and health at every stage of
+          plant development.
+        </p>
+      </div>
+      <div class="sec-head" style="max-width:760px; margin-top:-18px">
+        <p>
+          Our insecticides and fungicides protect the crop from insects and disease and improve
+          plant vigour. Our herbicides control weeds, which can reduce yields through competition
+          for nutrients, water and light. Modern chemical technologies also help plants reduce
+          yield losses during periods of drought or heat. Whether growers raise corn or rice,
+          vegetables or cash crops, our innovations help them overcome the challenges of the season
+          — from sowing to harvest.
+        </p>
+      </div>
+
+      <div class="pillars" style="margin-top:40px">
         {VALUES.map((v) => (
           <div class="pillar">
             <div class="pic"><Icon name={v.icon} size={26} /></div>
@@ -65,7 +99,8 @@ const VALUES = [
     </div>
   </section>
 
-  <section>
+  <!-- ============ CTA ============ -->
+  <section class="sec-white">
     <div class="container">
       <div class="cta-band">
         <div>

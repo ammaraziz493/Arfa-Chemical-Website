@@ -16,7 +16,7 @@ const WHY = [
   { icon: 'chat', title: 'Order on WhatsApp', text: 'Send an order in two minutes — no accounts, no checkout forms, no waiting.' },
 ];
 const STEPS = [
-  { icon: 'sprout', title: 'Pick your product', text: 'Browse the catalog by category — fertilizers, insecticides, fungicides, seed treatment or biologicals.' },
+  { icon: 'sprout', title: 'Pick your product', text: 'Browse the catalog by category — crop protection, seeds, fertilizers and more, for every stage of the season.' },
   { icon: 'chat', title: 'Send your order', text: 'Tap "Order on WhatsApp" and your product, pack size and price are already typed out for you.' },
   { icon: 'truck', title: 'Get delivery & advice', text: 'We confirm availability, arrange supply through your nearest dealer and share application guidance.' },
 ];
@@ -26,11 +26,12 @@ const STEPS = [
   <section class="hero">
     <div class="container">
       <div>
-        <span class="eyebrow">Crop Nutrition &amp; Protection</span>
-        <h1>Quality agro inputs for <em>healthier harvests</em></h1>
+        <span class="eyebrow">Crop Protection &amp; Seeds</span>
+        <h1>Crop protection &amp; seeds for <em>healthier harvests</em></h1>
         <p class="lead">
-          {SITE.name} brings farmers and dealers a dependable range of fertilizers, pesticides
-          and biologicals — backed by honest, crop-specific guidance from people who know the field.
+          {SITE.name} is a plant science company bringing growers a dependable range of crop
+          protection products, seeds and quality agro inputs — backed by honest, crop-specific
+          guidance from people who know the field.
         </p>
         <div class="hero-cta">
           <a class="btn btn-wa btn-lg" href={waLink('Assalam-o-Alaikum! I would like to know more about Arfa Chemicals products.')} target="_blank" rel="noopener">
@@ -61,7 +62,7 @@ const STEPS = [
       <div class="sec-head">
         <div class="kicker">Shop by Category</div>
         <h2>The complete crop range</h2>
-        <p>From seed treatment at sowing to protection through harvest — every stage of the season is covered.</p>
+        <p>Protection at every stage of the season — from seed treatment at sowing to pest, disease and weed control through harvest.</p>
       </div>
       <div class="cat-grid">
         {CATEGORIES.map((cat) => (

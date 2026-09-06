@@ -4,13 +4,14 @@
 export const SITE = {
   name: 'Arfa Chemicals',
   shortName: 'ARFA',
-  tagline: 'Crop Nutrition & Protection',
+  tagline: 'Crop Protection & Seeds',
   // WhatsApp number in international format, digits only (no +, spaces, dashes)
-  whatsapp: '923001234567',
-  phoneDisplay: '+92 300 1234567',
-  phoneHref: '+923001234567',
-  email: 'info@arfachemicals.pk',
-  address: 'Main G.T. Road, Faisalabad, Punjab, Pakistan',
+  // Call & WhatsApp: 0324 5764838
+  whatsapp: '923245764838',
+  phoneDisplay: '+92 324 5764838',
+  phoneHref: '+923245764838',
+  email: 'info@arfachemicals.pk', // PLACEHOLDER — confirm real email
+  address: 'China Chowk Industrial Estate, Multan, Punjab, Pakistan',
   hours: 'Mon – Sat: 9:00 AM – 7:00 PM',
 };
 
