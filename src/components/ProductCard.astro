@@ -2,6 +2,7 @@
 import ProductArt from './ProductArt.astro';
 import { fmtPrice, catLabel } from '../data/products.js';
 import { waLink, WA_ORDER_TEXT } from '../data/site.js';
+import { C } from '../data/content.js';
 
 const { product } = Astro.props;
 const href = `/products/${product.slug}/`;
@@ -20,11 +21,11 @@ const href = `/products/${product.slug}/`;
     <div class="pack">{product.pack}</div>
     <div class="price">
       {fmtPrice(product.price)}
-      <small> / pack</small>
+      <small>{C.ui.perPack}</small>
     </div>
     <div class="pcard-actions">
-      <a class="btn btn-outline btn-sm" href={href}>Details</a>
-      <a class="btn btn-wa btn-sm" href={waLink(WA_ORDER_TEXT(product))} target="_blank" rel="noopener">Order</a>
+      <a class="btn btn-outline btn-sm" href={href}>{C.ui.details}</a>
+      <a class="btn btn-wa btn-sm" href={waLink(WA_ORDER_TEXT(product))} target="_blank" rel="noopener">{C.ui.order}</a>
     </div>
   </div>
 </article>

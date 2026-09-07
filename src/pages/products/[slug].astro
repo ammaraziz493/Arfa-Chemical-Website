@@ -5,12 +5,14 @@ import ProductArt from '../../components/ProductArt.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import { PRODUCTS, relatedProducts, fmtPrice, catLabel, CATEGORIES } from '../../data/products.js';
 import { SITE, waLink, WA_ORDER_TEXT } from '../../data/site.js';
+import { C } from '../../data/content.js';
 
 export function getStaticPaths() {
   return PRODUCTS.map((p) => ({ params: { slug: p.slug }, props: { product: p } }));
 }
 
 const { product } = Astro.props;
+const PP = C.productPage;
 const related = relatedProducts(product);
 const cat = CATEGORIES.find((c) => c.slug === product.category);
 const productUrl = new URL(`/products/${product.slug}/`, Astro.site);
@@ -35,8 +37,8 @@ const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site) },
-    { '@type': 'ListItem', position: 2, name: 'Products', item: new URL('/products/', Astro.site) },
+    { '@type': 'ListItem', position: 1, name: C.nav.home, item: new URL('/', Astro.site) },
+    { '@type': 'ListItem', position: 2, name: C.nav.products, item: new URL('/products/', Astro.site) },
     { '@type': 'ListItem', position: 3, name: product.name, item: productUrl },
   ],
 };
@@ -51,7 +53,7 @@ const breadcrumbJsonLd = {
   <section class="page-hero">
     <div class="container">
       <div class="breadcrumb">
-        <a href="/">Home</a> / <a href="/products/">Products</a> / <a href={`/products/?cat=${product.category}`}>{cat?.name}</a>
+        <a href="/">{C.nav.home}</a> / <a href="/products/">{C.nav.products}</a> / <a href={`/products/?cat=${product.category}`}>{cat?.name}</a>
       </div>
       <h1>{product.name}</h1>
       <p>{product.short}</p>
@@ -72,37 +74,34 @@ const breadcrumbJsonLd = {
 
           <div class="price-row">
             <span class="big">{fmtPrice(product.price)}</span>
-            <span class="pack">per {product.pack}</span>
+            <span class="pack">{C.ui.per} {product.pack}</span>
           </div>
 
           <div class="pd-btns">
             <a class="btn btn-wa btn-lg" href={waLink(WA_ORDER_TEXT(product))} target="_blank" rel="noopener">
-              <Icon name="chat" size={18} /> Order on WhatsApp
+              <Icon name="chat" size={18} /> {PP.orderWa}
             </a>
             <a class="btn btn-outline btn-lg" href={`tel:${SITE.phoneHref}`}>
-              <Icon name="phone" size={18} /> Call to order
+              <Icon name="phone" size={18} /> {PP.callToOrder}
             </a>
           </div>
 
-          <h2>Key benefits</h2>
+          <h2>{PP.benefits}</h2>
           <ul class="pd-list">
             {product.description.map((d) => <li>{d}</li>)}
           </ul>
 
-          <h2>Suitable for</h2>
+          <h2>{PP.crops}</h2>
           <div class="crop-chips">
             {product.crops.map((cr) => <span>{cr}</span>)}
           </div>
 
-          <div class="note-box">
-            <strong>Note:</strong> Prices shown are indicative and may change with market rates.
-            Always confirm dosage and compatibility with our team or your local dealer before application.
-          </div>
+          <div class="note-box">{PP.note}</div>
         </div>
       </div>
 
       <div class="mt-40">
-        <h2 style="color:var(--blue-deep); font-size:26px">You may also like</h2>
+        <h2 style="color:var(--blue-deep); font-size:26px">{PP.related}</h2>
         <div class="grid grid-3" style="margin-top:22px">
           {related.map((p) => <ProductCard product={p} />)}
         </div>

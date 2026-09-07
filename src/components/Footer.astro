@@ -2,33 +2,36 @@
 import Icon from './Icon.astro';
 import { SITE, waLink } from '../data/site.js';
 import { CATEGORIES } from '../data/products.js';
+import { C } from '../data/content.js';
 const year = new Date().getFullYear();
 const cats = CATEGORIES.map((c) => ({ href: `/products/?cat=${c.slug}`, label: c.name }));
+const quick = [
+  { href: '/', label: C.nav.home },
+  { href: '/products/', label: C.nav.products },
+  { href: '/about/', label: C.nav.about },
+  { href: '/contact/', label: C.nav.contact },
+];
+const intro = 'Assalam-o-Alaikum! I would like to know more about Arfa Chemicals products.';
 ---
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
       <div class="fabout">
         <img class="logo-f" src="/images/logo.png" alt={`${SITE.name} logo`} />
-        <p>
-          {SITE.name} is a plant science company supplying crop protection products, seeds and
-          quality agro inputs — with practical, crop-specific guidance for growers and dealers
-          across Pakistan.
-        </p>
+        <p>{C.footer.blurb}</p>
       </div>
 
       <div>
-        <h4>Quick Links</h4>
+        <h4>{C.footer.quickLinks}</h4>
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/products/">All Products</a></li>
-          <li><a href="/about/">About Us</a></li>
-          <li><a href="/contact/">Contact</a></li>
+          {quick.map((q) => (
+            <li><a href={q.href}>{q.label}</a></li>
+          ))}
         </ul>
       </div>
 
       <div>
-        <h4>Product Range</h4>
+        <h4>{C.footer.range}</h4>
         <ul>
           {cats.map((c) => (
             <li><a href={c.href}>{c.label}</a></li>
@@ -37,9 +40,9 @@ const cats = CATEGORIES.map((c) => ({ href: `/products/?cat=${c.slug}`, label: c
       </div>
 
       <div class="fcontact">
-        <h4>Get in Touch</h4>
+        <h4>{C.footer.contactH}</h4>
         <p><Icon name="phone" size={15} /><a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a></p>
-        <p><Icon name="chat" size={15} /><a href={waLink('Assalam-o-Alaikum! I would like to know more about Arfa Chemicals products.')} target="_blank" rel="noopener">WhatsApp us</a></p>
+        <p><Icon name="chat" size={15} /><a href={waLink(intro)} target="_blank" rel="noopener">{C.footer.whatsappUs}</a></p>
         <p><Icon name="mail" size={15} /><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
         <p><Icon name="pin" size={15} /><span>{SITE.address}</span></p>
         <p><Icon name="clock" size={15} /><span>{SITE.hours}</span></p>
@@ -49,18 +52,18 @@ const cats = CATEGORIES.map((c) => ({ href: `/products/?cat=${c.slug}`, label: c
   <div class="footer-bottom">
     <div class="container">
       <span>© {year} {SITE.name}. All rights reserved.</span>
-      <span>Prices shown are indicative — contact us for current rates.</span>
+      <span>{C.footer.disclaimer}</span>
     </div>
   </div>
 </footer>
 
 <a
   class="wa-float"
-  href={waLink('Assalam-o-Alaikum! I would like to know more about Arfa Chemicals products.')}
+  href={waLink(intro)}
   target="_blank"
   rel="noopener"
-  aria-label="Order on WhatsApp"
-  title="Order on WhatsApp"
+  aria-label={C.footer.whatsappUs}
+  title={C.footer.whatsappUs}
 ><Icon name="chat" size={26} /></a>
 
 <style>

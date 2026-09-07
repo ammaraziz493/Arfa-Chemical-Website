@@ -1,0 +1,13 @@
+{
+  "name": "arfa-admin",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Arfa Chemicals admin panel — self-contained package: Netlify function (password gate + GitHub commits) and embedded admin UI. All admin code lives here; the website only routes /admin-password to it via netlify.toml.",
+  "scripts": {
+    "check": "node --check netlify/functions/admin.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

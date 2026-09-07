@@ -1,0 +1,125 @@
+{
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "about": "About Us",
+    "contact": "Contact",
+    "orderWa": "Order on WhatsApp"
+  },
+  "ui": {
+    "details": "Details",
+    "order": "Order",
+    "viewAll": "View all products",
+    "perPack": "/ pack",
+    "per": "per",
+    "currency": "Rs.",
+    "all": "All",
+    "productsLabel": "products"
+  },
+  "home": {
+    "eyebrow": "Crop Protection & Seeds",
+    "h1": "Crop protection & seeds for ",
+    "h1Em": "healthier harvests",
+    "lead": "Arfa Chemicals is a plant science company bringing growers a dependable range of crop protection products, seeds and quality agro inputs — backed by honest, crop-specific guidance from people who know the field.",
+    "trust": [
+      "Genuine stock",
+      "Farmer & dealer support",
+      "Competitive rates"
+    ],
+    "float1": { "title": "Best Sellers", "sub": "curated every season" },
+    "float2": { "title": "All Crop Range", "sub": "products listed" },
+    "catKicker": "Shop by Category",
+    "catH2": "The complete crop range",
+    "catP": "Protection at every stage of the season — from seed treatment at sowing to pest, disease and weed control through harvest.",
+    "bestKicker": "Most Ordered",
+    "bestH2": "Best sellers this season",
+    "bestP": "Top picks that farmers keep coming back for — with current indicative prices.",
+    "whyKicker": "Why Arfa Chemicals",
+    "whyH2": "More than a product list",
+    "whyP": "We sell inputs — but we stay for the advice, the follow-up and the harvest. That is why dealers and farmers keep coming back season after season.",
+    "whyCta": "Get product advice on WhatsApp",
+    "whyItems": [
+      { "icon": "check", "title": "Genuine, quality inputs", "text": "Every fertilizer and chemical is sourced from reliable manufacturers with proper registration and batch quality." },
+      { "icon": "sprout", "title": "Crop-specific guidance", "text": "Not sure what to apply? Get practical advice matched to your crop, season and soil conditions." },
+      { "icon": "pin", "title": "Nationwide dealer network", "text": "A growing network of partner dealers means products and support near your fields." },
+      { "icon": "chat", "title": "Order on WhatsApp", "text": "Send an order in two minutes — no accounts, no checkout forms, no waiting." }
+    ],
+    "stepsKicker": "No account. No checkout. No waiting.",
+    "stepsH2": "How ordering works",
+    "stepsP": "Buying is a WhatsApp message away — exactly how Pakistani dealers and farmers prefer to work.",
+    "stepsItems": [
+      { "icon": "sprout", "title": "Pick your product", "text": "Browse the catalog by category — crop protection, seeds, fertilizers and more, for every stage of the season." },
+      { "icon": "chat", "title": "Send your order", "text": "Tap “Order on WhatsApp” and your product, pack size and price are already typed out for you." },
+      { "icon": "truck", "title": "Get delivery & advice", "text": "We confirm availability, arrange supply through your nearest dealer and share application guidance." }
+    ],
+    "ctaH2": "Ready to order or need advice?",
+    "ctaP": "Talk directly to our team on WhatsApp — availability, rates and practical advice in minutes.",
+    "ctaBtn": "Chat with an expert"
+  },
+  "productsPage": {
+    "h1": "Our Products",
+    "heroP": "Fertilizers, crop protection and biologicals for every stage of the season. Filter by category or search by name — prices are indicative; contact us for today's rates.",
+    "searchPlaceholder": "Search products… (e.g. urea, zinc, fungicide)",
+    "resultsAll": "Showing all {n} products",
+    "resultsCat": "Showing {n} products in this category",
+    "resultsSearch": "Showing {n} of {m} products",
+    "empty": "No products match your search. Try a different category or keyword."
+  },
+  "productPage": {
+    "benefits": "Key benefits",
+    "crops": "Suitable for",
+    "related": "You may also like",
+    "orderWa": "Order on WhatsApp",
+    "callToOrder": "Call to order",
+    "note": "Note: Prices shown are indicative and may change with market rates. Always confirm dosage and compatibility with our team or your local dealer before application."
+  },
+  "aboutPage": {
+    "h1": "About Arfa Chemicals",
+    "heroP": "A plant science company committed to sustainable agriculture — importing and distributing crop protection products and seeds for growers across Pakistan.",
+    "kicker": "Company profile",
+    "h2": "Science for sustainable agriculture",
+    "paras": [
+      "Arfa Chemicals was incorporated in 2025 as an unlisted public company. The principal activities of the company comprise the import and sale of agricultural products, and we are engaged in the distribution and sale of crop protection products alongside the seeds business.",
+      "Through world-class science and innovative crop solutions, our people are working to transform how crops are grown. We are committed to rescuing land from degradation, enhancing biodiversity and revitalizing rural communities — helping to improve food security by enabling farmers to make better use of available resources.",
+      "We provide products and solutions that help farmers achieve food security for a growing population, sustainably. We look at agriculture through the eyes of growers, and apply that understanding to every product we import and every recommendation we make."
+    ],
+    "visionH": "Vision & Mission",
+    "visionP": "Arfa Chemicals is a plant science company committed to promoting sustainable agriculture through innovation, research and technology. Our aim is to help feed a growing population by bringing plant potential to life.",
+    "ambitionH": "Our Ambition",
+    "ambitionP": "To bring greater food security — in an environmentally sustainable way — to an increasingly populous world, by creating a step change in farm productivity.",
+    "supplyKicker": "What we supply",
+    "supplyH2": "Crop protection products & seeds",
+    "supplyP1": "Our crop protection range comprises insecticides for control of pests affecting food and cash crops, fungicides against plant diseases and herbicides for weed control, particularly in food crops. With a broad range of safe and efficient products, we improve crop yield and health at every stage of plant development.",
+    "supplyP2": "Our insecticides and fungicides protect the crop from insects and disease and improve plant vigour. Our herbicides control weeds, which can reduce yields through competition for nutrients, water and light. Modern chemical technologies also help plants reduce yield losses during periods of drought or heat. Whether growers raise corn or rice, vegetables or cash crops, our innovations help them overcome the challenges of the season — from sowing to harvest.",
+    "values": [
+      { "icon": "leaf", "title": "Sustainable agriculture", "text": "Committed to rescuing land from degradation, enhancing biodiversity and revitalizing rural communities." },
+      { "icon": "sprout", "title": "Innovation & research", "text": "Applying world-class science and innovative crop solutions to transform how crops are grown — from weeds, insects and disease to the effects of heat and cold." },
+      { "icon": "chat", "title": "Grower-first", "text": "We look at agriculture through the eyes of growers, helping farmers make better use of available resources, season after season." }
+    ],
+    "ctaH2": "Talk to our team",
+    "ctaP": "Questions about products, dosage or becoming a dealer? We reply fast.",
+    "ctaBtn": "Start a conversation"
+  },
+  "contactPage": {
+    "h1": "Contact Us",
+    "heroP": "Orders, availability, pricing or dealer inquiries — reach us the way that suits you. We respond during business hours.",
+    "callLabel": "Call us",
+    "waLabel": "WhatsApp",
+    "emailLabel": "Email",
+    "officeLabel": "Office address",
+    "hoursLabel": "Business hours",
+    "waChat": "Chat on",
+    "formH": "Send us a message",
+    "formP": "Fill this in and your message opens in WhatsApp — ready to send to our team. No accounts, no server-side storage.",
+    "formBtn": "Send via WhatsApp",
+    "formNotePrefix": "Prefer email? Write to us at "
+  },
+  "footer": {
+    "blurb": "Arfa Chemicals is a plant science company supplying crop protection products, seeds and quality agro inputs — with practical, crop-specific guidance for growers and dealers across Pakistan.",
+    "quickLinks": "Quick Links",
+    "range": "Product Range",
+    "contactH": "Get in Touch",
+    "whatsappUs": "WhatsApp us",
+    "disclaimer": "Prices shown are indicative — contact us for current rates."
+  }
+}

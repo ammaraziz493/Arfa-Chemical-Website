@@ -1,0 +1,23 @@
+# Build (Astro site stays the main build — run from repo root)
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Admin functions live inside the admin/ package
+[functions]
+  directory = "admin/netlify/functions"
+  node_bundler = "esbuild"
+  included_files = ["admin/netlify/functions/ui.html"]
+
+# Pretty URL for the admin panel → serverless function (keeps /admin-password in the address bar)
+[[redirects]]
+  from = "/admin-password"
+  to = "/.netlify/functions/admin"
+  status = 200
+  force = true
+
+# Never let a crawler find the admin page (belt & braces: function also sends X-Robots-Tag)
+[[headers]]
+  for = "/admin-password"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

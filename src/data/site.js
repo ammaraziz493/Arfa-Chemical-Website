@@ -1,19 +1,10 @@
 // ============================================================
-// SITE CONFIG — edit this file to update contact details
+// SITE CONFIG — editable from the admin panel (src/data/site.json)
+// This file only wires the JSON data + helper functions.
 // ============================================================
-export const SITE = {
-  name: 'Arfa Chemicals',
-  shortName: 'ARFA',
-  tagline: 'Crop Protection & Seeds',
-  // WhatsApp number in international format, digits only (no +, spaces, dashes)
-  // Call & WhatsApp: 0324 5764838
-  whatsapp: '923245764838',
-  phoneDisplay: '+92 324 5764838',
-  phoneHref: '+923245764838',
-  email: 'info@arfachemicals.pk', // PLACEHOLDER — confirm real email
-  address: 'China Chowk Industrial Estate, Multan, Punjab, Pakistan',
-  hours: 'Mon – Sat: 9:00 AM – 7:00 PM',
-};
+import siteJson from './site.json';
+
+export const SITE = siteJson;
 
 // Pre-built WhatsApp order deep link
 export function waLink(message) {

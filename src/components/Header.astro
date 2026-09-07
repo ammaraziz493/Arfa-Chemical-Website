@@ -1,14 +1,16 @@
 ---
 import Icon from './Icon.astro';
 import { SITE, waLink } from '../data/site.js';
+import { C } from '../data/content.js';
 const { pathname = '' } = Astro.url;
 const nav = [
-  { href: '/', label: 'Home' },
-  { href: '/products/', label: 'Products' },
-  { href: '/about/', label: 'About Us' },
-  { href: '/contact/', label: 'Contact' },
+  { href: '/', label: C.nav.home },
+  { href: '/products/', label: C.nav.products },
+  { href: '/about/', label: C.nav.about },
+  { href: '/contact/', label: C.nav.contact },
 ];
 const isActive = (href) => (href === '/' ? pathname === '/' || pathname === '/index.html' : pathname.startsWith(href));
+const intro = 'Assalam-o-Alaikum! I would like to know more about Arfa Chemicals products.';
 ---
 <div class="topbar">
   <div class="container">
@@ -24,7 +26,7 @@ const isActive = (href) => (href === '/' ? pathname === '/' || pathname === '/in
 
 <header class="header" id="site-header">
   <div class="container">
-    <a class="brand" href="/" aria-label={`${SITE.name} — home`}>
+    <a class="brand" href="/" aria-label={`${SITE.name} — ${C.nav.home}`}>
       <img class="logo" src="/images/logo.png" alt={`${SITE.name} logo`} />
     </a>
 
@@ -38,10 +40,10 @@ const isActive = (href) => (href === '/' ? pathname === '/' || pathname === '/in
       ))}
       <a
         class="btn btn-wa btn-sm"
-        href={waLink('Assalam-o-Alaikum! I would like to know more about Arfa Chemicals products.')}
+        href={waLink(intro)}
         target="_blank"
         rel="noopener"
-      >Order on WhatsApp</a>
+      >{C.nav.orderWa}</a>
     </nav>
   </div>
 </header>

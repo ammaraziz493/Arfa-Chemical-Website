@@ -3,5 +3,6 @@
 
 User-agent: *
 Allow: /
+Disallow: /admin-password
 
 Sitemap: https://arfachemicals.dpdns.org/sitemap-index.xml

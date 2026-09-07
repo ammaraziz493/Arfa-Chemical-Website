@@ -3,16 +3,19 @@ import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import { SITE, waLink } from '../data/site.js';
 import { CATEGORIES } from '../data/products.js';
+import { C } from '../data/content.js';
+const K = C.contactPage;
+const intro = 'Assalam-o-Alaikum! I would like to know more about Arfa Chemicals products.';
 ---
 <Layout
-  title="Contact Us — Arfa Chemicals"
+  title={`${K.h1} — Arfa Chemicals`}
   description="Contact Arfa Chemicals — call, WhatsApp or email us for product availability, prices and dealer information."
 >
   <section class="page-hero">
     <div class="container">
-      <div class="breadcrumb"><a href="/">Home</a> / Contact</div>
-      <h1>Contact Us</h1>
-      <p>Orders, availability, pricing or dealer inquiries — reach us the way that suits you. We respond during business hours.</p>
+      <div class="breadcrumb"><a href="/">{C.nav.home}</a> / {C.nav.contact}</div>
+      <h1>{K.h1}</h1>
+      <p>{K.heroP}</p>
     </div>
   </section>
 
@@ -23,43 +26,43 @@ import { CATEGORIES } from '../data/products.js';
           <div class="contact-card">
             <div class="cic"><Icon name="phone" size={22} /></div>
             <div>
-              <h3>Call us</h3>
+              <h3>{K.callLabel}</h3>
               <p><a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a></p>
             </div>
           </div>
           <div class="contact-card">
             <div class="cic"><Icon name="chat" size={22} /></div>
             <div>
-              <h3>WhatsApp</h3>
-              <p><a href={waLink('Assalam-o-Alaikum! I would like to know more about Arfa Chemicals products.')} target="_blank" rel="noopener">Chat on {SITE.phoneDisplay}</a></p>
+              <h3>{K.waLabel}</h3>
+              <p><a href={waLink(intro)} target="_blank" rel="noopener">{K.waChat} {SITE.phoneDisplay}</a></p>
             </div>
           </div>
           <div class="contact-card">
             <div class="cic"><Icon name="mail" size={22} /></div>
             <div>
-              <h3>Email</h3>
+              <h3>{K.emailLabel}</h3>
               <p><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
             </div>
           </div>
           <div class="contact-card">
             <div class="cic"><Icon name="pin" size={22} /></div>
             <div>
-              <h3>Office address</h3>
+              <h3>{K.officeLabel}</h3>
               <p>{SITE.address}</p>
             </div>
           </div>
           <div class="contact-card">
             <div class="cic"><Icon name="clock" size={22} /></div>
             <div>
-              <h3>Business hours</h3>
+              <h3>{K.hoursLabel}</h3>
               <p>{SITE.hours}</p>
             </div>
           </div>
         </div>
 
         <div class="form-card">
-          <h2>Send us a message</h2>
-          <p style="color:var(--ink-soft); font-size:14.5px">Fill this in and your message opens in WhatsApp — ready to send to our team. No accounts, no server-side storage.</p>
+          <h2>{K.formH}</h2>
+          <p style="color:var(--ink-soft); font-size:14.5px">{K.formP}</p>
           <form id="contact-form" data-wa={SITE.whatsapp}>
             <div class="form-row">
               <div class="field">
@@ -74,7 +77,7 @@ import { CATEGORIES } from '../data/products.js';
             <div class="form-row">
               <div class="field">
                 <label for="f-city">City / District</label>
-                <input id="f-city" name="city" type="text" placeholder="e.g. Faisalabad" />
+                <input id="f-city" name="city" type="text" placeholder="e.g. Multan" />
               </div>
               <div class="field">
                 <label for="f-topic">I'm interested in</label>
@@ -90,10 +93,10 @@ import { CATEGORIES } from '../data/products.js';
               <textarea id="f-msg" name="message" required placeholder="Your crop, quantity needed, or any question…"></textarea>
             </div>
             <button class="btn btn-wa btn-lg" type="submit" style="width:100%">
-              <Icon name="chat" size={18} /> Send via WhatsApp
+              <Icon name="chat" size={18} /> {K.formBtn}
             </button>
             <p class="form-note">
-              Prefer email? Write to us at <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+              {K.formNotePrefix}<a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
             </p>
           </form>
         </div>
@@ -123,7 +126,7 @@ import { CATEGORIES } from '../data/products.js';
         '',
         'Message: ' + msg,
       ].filter(Boolean);
-      var waNumber = form.dataset.wa || '923001234567';
+      var waNumber = form.dataset.wa || '923245764838';
       var url = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(lines.join('\n'));
       window.open(url, '_blank', 'noopener');
     });

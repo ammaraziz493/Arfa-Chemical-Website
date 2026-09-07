@@ -2,39 +2,42 @@
 import Layout from '../../layouts/Layout.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import { PRODUCTS, CATEGORIES } from '../../data/products.js';
+import { C } from '../../data/content.js';
+const P = C.productsPage;
+const tmpl = (s, vars) => (s || '').replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? `{${k}}`);
 ---
 <Layout
-  title="Our Products — Arfa Chemicals"
+  title={`${P.h1} — Arfa Chemicals`}
   description="Browse the Arfa Chemicals product range: fertilizers, insecticides, fungicides, seed treatment and biologicals with current indicative prices in PKR."
 >
   <section class="page-hero">
     <div class="container">
-      <div class="breadcrumb"><a href="/">Home</a> / Products</div>
-      <h1>Our Products</h1>
-      <p>Fertilizers, crop protection and biologicals for every stage of the season. Filter by category or search by name — prices are indicative; contact us for today's rates.</p>
+      <div class="breadcrumb"><a href="/">{C.nav.home}</a> / {C.nav.products}</div>
+      <h1>{P.h1}</h1>
+      <p>{P.heroP}</p>
     </div>
   </section>
 
   <section>
     <div class="container">
       <div class="filters" id="filter-bar" role="group" aria-label="Filter products by category">
-        <button class="fchip on" data-cat="all" type="button">All</button>
+        <button class="fchip on" data-cat="all" type="button">{C.ui.all}</button>
         {CATEGORIES.map((cat) => (
           <button class="fchip" data-cat={cat.slug} type="button">{cat.name}</button>
         ))}
       </div>
 
       <div class="search-row">
-        <input id="product-search" type="search" placeholder="Search products… (e.g. urea, zinc, fungicide)" aria-label="Search products" />
+        <input id="product-search" type="search" placeholder={P.searchPlaceholder} aria-label="Search products" />
       </div>
 
-      <p class="result-count" id="result-count">Showing all {PRODUCTS.length} products</p>
+      <p class="result-count" id="result-count" data-txt-all={P.resultsAll} data-txt-cat={P.resultsCat} data-txt-search={P.resultsSearch}>{tmpl(P.resultsAll, { n: PRODUCTS.length })}</p>
 
       <div class="grid" id="product-grid">
         {PRODUCTS.map((p) => <ProductCard product={p} />)}
       </div>
 
-      <div class="empty" id="empty-state" hidden>No products match your search. Try a different category or keyword.</div>
+      <div class="empty" id="empty-state" hidden>{P.empty}</div>
     </div>
   </section>
 </Layout>
@@ -58,6 +61,11 @@ import { PRODUCTS, CATEGORIES } from '../../data/products.js';
     if (!grid || !count) return;
     var cards = Array.prototype.slice.call(grid.querySelectorAll('.pcard'));
     var activeCat = 'all';
+    var texts = {
+      all: count.dataset.txtAll || '',
+      cat: count.dataset.txtCat || '',
+      search: count.dataset.txtSearch || '',
+    };
 
     function apply() {
       var q = (search && search.value.trim().toLowerCase()) || '';
@@ -70,11 +78,11 @@ import { PRODUCTS, CATEGORIES } from '../../data/products.js';
         if (show) shown++;
       });
       var total = cards.length;
-      count.textContent = q
-        ? 'Showing ' + shown + ' of ' + total + ' products'
-        : activeCat === 'all'
-          ? 'Showing all ' + total + ' products'
-          : 'Showing ' + shown + ' products in this category';
+      var s;
+      if (q) s = texts.search.replace('{n}', shown).replace('{m}', total);
+      else if (activeCat === 'all') s = texts.all.replace('{n}', total);
+      else s = texts.cat.replace('{n}', shown);
+      count.textContent = s;
       if (empty) empty.hidden = shown !== 0;
     }
 
@@ -95,7 +103,6 @@ import { PRODUCTS, CATEGORIES } from '../../data/products.js';
     setPressed();
     if (search) search.addEventListener('input', apply);
 
-    // support /products/?cat=<slug> deep links
     var m = (location.search || '').match(/[?&]cat=([^&]+)/);
     if (m) {
       var target = chips.find(function (c) { return c.dataset.cat === m[1]; });

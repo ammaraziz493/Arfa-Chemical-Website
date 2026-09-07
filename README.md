@@ -26,22 +26,38 @@ green accents) is derived from the logo.
 - About page: built from the company profile (incorporated 2025, unlisted public company,
   import & sale of agricultural products, crop protection + seeds distribution).
 
+## Admin panel (edit text & products from the browser)
+
+The site ships with a password-protected admin panel — **all its code lives in the
+`admin/` package** (`admin/netlify/functions/admin.mjs` + `ui.html`), routed by
+`netlify.toml` to **`/admin-password`**.
+
+Edits commit JSON to the GitHub repo → Netlify rebuilds (~1 min). Needs 3 environment
+variables on Netlify: `ADMIN_PASSWORD`, `GITHUB_TOKEN` (fine-grained, Contents read+write),
+`GITHUB_REPO` (`owner/repo`). **Full setup: read `admin/README.md` first.**
+
+Editable data files (this is why pages read from JSON now):
+- `src/data/content.json` — every piece of site text
+- `src/data/products.json` — catalog + categories
+- `src/data/site.json` — WhatsApp, phone, email, address, hours
+
 ## Project structure
 
 ```
 src/
 ├── data/
-│   ├── site.js        ← phone, WhatsApp, email, address, hours
-│   └── products.js    ← product catalog + categories (edit to add products)
+│   ├── site.json      ← phone, WhatsApp, email, address, hours (admin-editable)
+│   ├── products.json  ← product catalog + categories (admin-editable)
+│   ├── content.json   ← all site text (admin-editable)
+│   ├── site.js        ← thin loader for site.json + waLink helpers
+│   ├── products.js    ← thin loader for products.json + catalog helpers
+│   └── content.js     ← exports the content object
 ├── components/        ← Header, Footer, ProductCard, ProductArt (SVG placeholder art), Icon
 ├── layouts/Layout.astro
-├── pages/
-│   ├── index.astro            (home)
-│   ├── products/index.astro   (catalog with live category filter + search)
-│   ├── products/[slug].astro  (one page per product — auto-generated)
-│   ├── about.astro  ·  contact.astro  ·  404.astro
-└── styles/global.css  (design tokens + all styles)
-public/images/logo.png · favicon.png
+├── pages/…
+└── styles/global.css
+admin/                 ← admin panel package (see admin/README.md)
+public/… · netlify.toml · robots.txt · sitemap
 ```
 
 ## Adding / editing a product

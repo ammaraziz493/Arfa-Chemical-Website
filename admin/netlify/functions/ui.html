@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Arfa Chemicals — Admin</title>
+<style>
+  :root{--blue:#0a4a8f;--green:#1e9e4a;--ink:#10202e;--soft:#44576a;--line:#e3ebe6;--bg:#f4f8f5;--red:#d64545}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14.5px;line-height:1.5}
+  h1,h2,h3{margin:0 0 8px;line-height:1.2}
+  .hidden{display:none!important}
+  .wrap{max-width:1060px;margin:0 auto;padding:20px}
+  #login{max-width:380px;margin:80px auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:32px;box-shadow:0 10px 30px rgba(6,41,77,.08)}
+  #login h1{font-size:20px;color:var(--blue)}
+  #login p{color:var(--soft);margin:0 0 16px;font-size:13px}
+  input,select,textarea{width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:9px;font:inherit;background:#fff;color:var(--ink)}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green)}
+  textarea{resize:vertical;min-height:70px;font-family:ui-monospace,Consolas,monospace;font-size:13px}
+  button{font:600 14px inherit;cursor:pointer;border-radius:9px;padding:9px 16px;border:1px solid transparent}
+  .btn{background:var(--green);color:#fff}
+  .btn.blue{background:var(--blue)}
+  .btn.ghost{background:#fff;border-color:var(--line);color:var(--soft)}
+  .btn.red{background:#fff;color:var(--red);border-color:#f0dada}
+  .btn.small{padding:5px 10px;font-size:12.5px}
+  .top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 20px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:9}
+  .top .brand{font-weight:800;color:var(--blue);font-size:17px}
+  .top .spacer{flex:1}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap}
+  .tabs button{background:#fff;border:1px solid var(--line);color:var(--soft)}
+  .tabs button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px}
+  .panel h2{font-size:16px;color:var(--blue)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:4px;text-transform:capitalize}
+  .field .hint{font-size:11.5px;color:#7c8ea0;font-weight:400;text-transform:none;margin-top:2px}
+  .group{border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:12px;background:#fafcfa}
+  .group h3{font-size:13px;color:var(--blue);text-transform:capitalize}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 0;border-bottom:1px dashed var(--line)}
+  .row:last-child{border-bottom:0}
+  .row .name{flex:1;min-width:180px;font-weight:600}
+  .row .sub{color:var(--soft);font-size:12.5px}
+  #msg{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:13.5px;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:50;display:none}
+  #msg.show{display:block}
+  #msg.err{background:var(--red)}
+  .check{display:flex;align-items:center;gap:8px}
+  .check input{width:auto}
+  .muted{color:var(--soft);font-size:12.5px}
+  .prod-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:#eef4fb;border:1px solid #d6e4f5;border-radius:999px;padding:4px 12px;font-size:12.5px}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <h1>Arfa Chemicals — Admin</h1>
+  <p>Enter the admin password to manage the website content.</p>
+  <div class="field">
+    <label for="pw">Password</label>
+    <input id="pw" type="password" autocomplete="current-password">
+  </div>
+  <button class="btn" id="unlock" style="width:100%">Unlock panel</button>
+  <p class="muted" style="margin-top:10px;text-align:center">Your password is never stored on the website — it is checked securely on the server.</p>
+</div>
+
+<div id="app" class="hidden">
+  <div class="top">
+    <div class="brand">Arfa Chemicals <span style="font-weight:500;color:var(--soft)">Admin</span></div>
+    <div class="spacer"></div>
+    <button class="btn small ghost" id="btn-save">Save current tab</button>
+    <button class="btn small ghost" id="btn-reload">Reload from repo</button>
+    <button class="btn small red" id="btn-logout">Log out</button>
+  </div>
+  <div class="tabs" style="padding:12px 20px 0">
+    <button data-tab="home" class="on">Homepage</button>
+    <button data-tab="about">About</button>
+    <button data-tab="pages">Pages &amp; footer</button>
+    <button data-tab="products">Products</button>
+    <button data-tab="site">Site &amp; contact</button>
+    <button data-tab="json">Raw JSON</button>
+  </div>
+  <div class="wrap" id="tab-host"></div>
+</div>
+
+<div id="msg"></div>
+
+<script>
+(function () {
+  'use strict';
+  var API = '/.netlify/functions/admin';
+  var state = { files: null, shas: null };
+  var tab = 'home';
+  var pw = sessionStorage.getItem('acpw') || '';
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  var msgTimer = null;
+  function msg(text, isErr) {
+    var m = $('msg');
+    m.textContent = text;
+    m.className = 'show' + (isErr ? ' err' : '');
+    clearTimeout(msgTimer);
+    msgTimer = setTimeout(function () { m.className = ''; }, isErr ? 5000 : 3500);
+  }
+  var PRETTY = {
+    h1Em: 'Headline accent (green)', whyKicker: 'Kicker', stepsKicker: 'Kicker',
+    stepsItems: 'Ordering steps', whyItems: 'Reason items', values: 'Company values',
+    paras: 'Paragraphs (one per line)', visionH: 'Panel heading', visionP: 'Panel text',
+    ambitionH: 'Panel heading', ambitionP: 'Panel text', supplyP1: 'Range paragraph 1',
+    supplyP2: 'Range paragraph 2', formNotePrefix: 'Email note (before link)',
+    resultsAll: 'Message when all shown', resultsCat: 'Message in a category',
+    resultsSearch: 'Message while searching', productsLabel: 'Word “products”',
+    perPack: 'Text after price', viewAll: '“View all products” button',
+    orderWa: 'Order button label', whatsappUs: 'WhatsApp link label', waChat: 'Chat prefix',
+    currency: 'Price symbol', order: '“Order” button', details: '“Details” button',
+    per: 'Word “per”', all: '“All” filter', float1: 'Floating badge 1', float2: 'Floating badge 2',
+    searchPlaceholder: 'Search box hint'
+  };
+  function pretty(key) {
+    if (PRETTY[key]) return PRETTY[key];
+    return key.replace(/([A-Z])/g, ' $1').replace(/^./, function (c) { return c.toUpperCase(); });
+  }
+
+  function api(body) {
+    var payload = Object.assign({ password: pw }, body);
+    return fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      return r.json().catch(function () { return { ok: false, error: 'Server error (' + r.status + ')' }; });
+    });
+  }
+
+  // ---------- model helpers ----------
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  function getPath(obj, path) {
+    var cur = obj;
+    if (!path) return cur;
+    path.split('.').forEach(function (p) {
+      cur = cur == null ? undefined : cur[/^\d+$/.test(p) ? parseInt(p, 10) : p];
+    });
+    return cur;
+  }
+  function setPath(obj, path, val) {
+    var parts = path.split('.');
+    var cur = obj;
+    for (var i = 0; i < parts.length - 1; i++) {
+      var key = /^\d+$/.test(parts[i]) ? parseInt(parts[i], 10) : parts[i];
+      cur = cur[key];
+    }
+    var last = /^\d+$/.test(parts[parts.length - 1]) ? parseInt(parts[parts.length - 1], 10) : parts[parts.length - 1];
+    cur[last] = val;
+  }
+  var ICONS = ['check', 'sprout', 'pin', 'chat', 'truck', 'leaf', 'phone', 'mail', 'clock'];
+
+  // ---------- unlock ----------
+  function unlock() {
+    var input = $('pw').value;
+    if (!input) { msg('Enter the password first', true); return; }
+    pw = input;
+    api({ action: 'state' }).then(function (res) {
+      if (!res.ok) { msg(res.error || 'Wrong password', true); pw = ''; return; }
+      sessionStorage.setItem('acpw', pw);
+      state.files = res.files;
+      state.shas = res.shas;
+      $('login').classList.add('hidden');
+      $('app').classList.remove('hidden');
+      renderTab();
+      msg('Welcome. Edit anything, then press “Save current tab”.');
+    });
+  }
+
+  // ---------- generic text editor ----------
+  function iconOptions(sel) {
+    return ICONS.map(function (i) {
+      return '<option value="' + i + '"' + (i === sel ? ' selected' : '') + '>' + i + '</option>';
+    }).join('');
+  }
+  function fieldHtml(key, val, path) {
+    var id = 'f-' + esc(path);
+    var out = '<div class="field"><label for="' + id + '">' + pretty(key) + '</label>';
+    if (key === 'icon' && typeof val === 'string') {
+      out += '<select id="' + id + '" data-path="' + esc(path) + '">' + iconOptions(val) + '</select>';
+    } else if (typeof val === 'boolean') {
+      out += '<span class="check"><input type="checkbox" id="' + id + '" data-path="' + esc(path) + '" data-type="bool"' + (val ? ' checked' : '') + '><span>Enabled</span></span>';
+    } else if (typeof val === 'number') {
+      out += '<input type="number" id="' + id + '" data-path="' + esc(path) + '" data-type="num" value="' + esc(val) + '">';
+    } else if (typeof val === 'string') {
+      var longKeys = ['lead', 'supplyP1', 'supplyP2', 'visionP', 'ambitionP', 'heroP', 'bestP', 'catP', 'whyP', 'stepsP', 'ctaP', 'blurb', 'formP', 'h1Em', 'searchPlaceholder'];
+      if (val.length > 90 || longKeys.indexOf(key) !== -1) {
+        out += '<textarea rows="4" id="' + id + '" data-path="' + esc(path) + '">' + esc(val) + '</textarea>';
+      } else {
+        out += '<input type="text" id="' + id + '" data-path="' + esc(path) + '" value="' + esc(val) + '">';
+      }
+    } else {
+      out += '<input type="text" id="' + id + '" value="' + esc(val) + '" disabled title="Not editable here — use Raw JSON">';
+    }
+    out += '</div>';
+    return out;
+  }
+
+  function renderSection(sectionKey) {
+    var obj = state.files.content[sectionKey];
+    if (!obj) { return '<div class="panel"><h2>' + pretty(sectionKey) + '</h2><p class="muted">(missing — will appear after a rebuild)</p></div>'; }
+    var html = '<div class="panel"><h2>' + pretty(sectionKey) + '</h2>';
+    (function walk(o, path) {
+      Object.keys(o).forEach(function (k) {
+        var v = o[k];
+        var p = path ? path + '.' + k : k;
+        if (Array.isArray(v)) {
+          if (!v.length || typeof v[0] !== 'object') {
+            html += '<div class="field"><label>' + pretty(k) + ' <span class="hint">(one per line)</span></label>' +
+              '<textarea rows="' + Math.min(v.length + 1, 8) + '" data-path="' + esc(p) + '" data-type="lines">' + esc(v.join('\n')) + '</textarea></div>';
+          } else {
+            html += '<div class="group"><h3>' + pretty(k) + '</h3>';
+            v.forEach(function (item, i) {
+              html += '<div class="group"><h3>Item ' + (i + 1) +
+                ' <button type="button" class="btn red small" data-del="' + esc(p) + '.' + i + '">remove</button></h3>';
+              Object.keys(item).forEach(function (ik) { html += fieldHtml(ik, item[ik], p + '.' + i + '.' + ik); });
+              html += '</div>';
+            });
+            html += '<button type="button" class="btn ghost small" data-add="' + esc(p) + '">+ Add item</button></div>';
+          }
+        } else if (v !== null && typeof v === 'object') {
+          html += '<div class="group"><h3>' + pretty(k) + '</h3>';
+          walk(v, p);
+          html += '</div>';
+        } else {
+          html += fieldHtml(k, v, p);
+        }
+      });
+    })(obj, sectionKey);
+    html += '</div>';
+    return html;
+  }
+
+  function renderTextTab(sections) {
+    var title = pretty(tab);
+    var html = '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px">' +
+      '<button class="btn blue small" id="save-tab">Save “' + esc(title) + '” to GitHub</button>' +
+      '<span class="muted">Takes effect after Netlify rebuilds (~1 minute).</span></div>';
+    sections.forEach(function (sec) { html += renderSection(sec); });
+    $('tab-host').innerHTML = html;
+
+    var saveBtn = $('save-tab');
+    saveBtn.onclick = function () { saveFile('content'); };
+
+    $('tab-host').querySelectorAll('[data-path]').forEach(function (el) {
+      el.addEventListener('change', function () {
+        var path = el.dataset.path;
+        var base = state.files.content;
+        var val;
+        if (el.dataset.type === 'num') val = parseFloat(el.value) || 0;
+        else if (el.dataset.type === 'bool') val = el.checked;
+        else if (el.dataset.type === 'lines') val = el.value.split('\n').map(function (s) { return s.replace(/\r$/, ''); });
+        else val = el.value;
+        setPath(base, path, val);
+      });
+    });
+    $('tab-host').querySelectorAll('[data-add]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        var arr = getPath(state.files.content, el.dataset.add);
+        if (arr && arr.length) {
+          var tpl = {};
+          Object.keys(arr[0]).forEach(function (k) {
+            var v = arr[0][k];
+            tpl[k] = typeof v === 'string' ? '' : Array.isArray(v) ? [] : typeof v === 'number' ? 0 : false;
+          });
+          arr.push(tpl);
+        }
+        renderTab();
+      });
+    });
+    $('tab-host').querySelectorAll('[data-del]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        var parts = el.dataset.del.split('.');
+        var idx = parseInt(parts.pop(), 10);
+        var arr = getPath(state.files.content, parts.join('.'));
+        if (arr && arr.length) arr.splice(idx, 1);
+        renderTab();
+      });
+    });
+  }
+
+  // ---------- products ----------
+  function slugify(s) {
+    return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+  function saveFile(fileKey) {
+    var files = {};
+    files['src/data/' + fileKey + '.json'] = state.files[fileKey];
+    var btn = $('save-tab') || $('btn-save');
+    if (btn) btn.disabled = true;
+    msg('Saving to GitHub…');
+    api({ action: 'save', files: files, shas: state.shas }).then(function (res) {
+      if (btn) btn.disabled = false;
+      if (!res.ok) return msg(res.error || 'Save failed', true);
+      if (res.shas) state.shas = res.shas;
+      msg('✓ Saved & committed. Netlify is rebuilding — check the live site in about 1 minute.');
+    });
+  }
+
+  function renderProductsTab() {
+    var f = state.files.products;
+    var html = '<div class="panel"><div class="prod-head"><h2>Products (' + f.products.length + ')</h2>' +
+      '<div style="display:flex;gap:8px"><button class="btn blue small" id="new-product">+ New product</button>' +
+      '<button class="btn small ghost" id="save-products">Save products to GitHub</button></div></div>' +
+      '<p class="muted">Products get automatic brand-colored artwork — no photos needed. Deletions publish when you press “Save products to GitHub”.</p></div>';
+    html += '<div class="panel"><h2>Categories</h2><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">';
+    f.categories.forEach(function (c, i) {
+      html += '<span class="chip">' + esc(c.name) +
+        ' <a href="#" data-cat-del="' + i + '" style="color:#b45309;text-decoration:none;font-weight:700" title="Remove category">×</a></span>';
+    });
+    html += '</div><div style="display:flex;gap:8px;max-width:460px">' +
+      '<input id="new-cat-name" placeholder="New category, e.g. Herbicides">' +
+      '<button class="btn small ghost" id="add-cat">Add</button></div></div>';
+    html += '<div class="panel"><h2>All products</h2>';
+    f.products.forEach(function (p, i) {
+      html += '<div class="row"><div class="name">' + esc(p.name) +
+        ' <span class="sub">— ' + esc(p.category) + ' · ' + esc(p.pack) + ' · Rs. ' + esc(p.price) +
+        (p.featured ? ' · ★ featured' : '') + (p.badge ? ' · ' + esc(p.badge) : '') + '</span></div>' +
+        '<button class="btn small ghost" data-edit="' + i + '">Edit</button>' +
+        '<button class="btn small red" data-delp="' + i + '">Delete</button></div>';
+    });
+    html += '</div>';
+    $('tab-host').innerHTML = html;
+
+    $('new-product').onclick = function () { productEditor(null); };
+    $('save-products').onclick = function () { saveFile('products'); };
+    $('add-cat').onclick = function () {
+      var name = $('new-cat-name').value.trim();
+      if (!name) return msg('Type a category name', true);
+      var slug = slugify(name);
+      if (f.categories.some(function (c) { return c.slug === slug; })) return msg('That category already exists', true);
+      f.categories.push({ slug: slug, name: name });
+      renderProductsTab();
+    };
+    $('tab-host').querySelectorAll('[data-cat-del]').forEach(function (a) {
+      a.onclick = function (e) {
+        e.preventDefault();
+        var i = parseInt(a.dataset.catDel, 10);
+        var inUse = f.products.some(function (p) { return p.category === f.categories[i].slug; });
+        if (inUse) return msg('Products use this category — delete or move them first', true);
+        f.categories.splice(i, 1);
+        renderProductsTab();
+      };
+    });
+    $('tab-host').querySelectorAll('[data-edit]').forEach(function (b) {
+      b.onclick = function () { productEditor(parseInt(b.dataset.edit, 10)); };
+    });
+    $('tab-host').querySelectorAll('[data-delp]').forEach(function (b) {
+      b.onclick = function () {
+        var i = parseInt(b.dataset.delp, 10);
+        if (!confirm('Delete “' + f.products[i].name + '”? Press “Save products to GitHub” to publish the change.')) return;
+        f.products.splice(i, 1);
+        renderProductsTab();
+        msg('Product removed locally — press “Save products to GitHub” to publish');
+      };
+    });
+  }
+
+  function productEditor(idx) {
+    var f = state.files.products;
+    var draft = idx == null
+      ? { name: '', slug: '', category: f.categories[0].slug, pack: '', price: 0, badge: '', featured: false, short: '', description: [''], crops: [] }
+      : clone(f.products[idx]);
+    var catOptions = f.categories.map(function (c) {
+      return '<option value="' + esc(c.slug) + '"' + (c.slug === draft.category ? ' selected' : '') + '>' + esc(c.name) + '</option>';
+    }).join('');
+    var html = '<div class="panel"><h2>' + (idx == null ? 'New product' : 'Edit — ' + esc(draft.name)) + '</h2><div class="grid2">' +
+      '<div class="field"><label>Product name *</label><input id="ed-name" value="' + esc(draft.name) + '"></div>' +
+      '<div class="field"><label>Slug (URL) <span class="hint">empty = auto from name</span></label><input id="ed-slug" value="' + esc(draft.slug) + '"></div>' +
+      '<div class="field"><label>Category</label><select id="ed-cat">' + catOptions + '</select></div>' +
+      '<div class="field"><label>Pack / size</label><input id="ed-pack" value="' + esc(draft.pack) + '"></div>' +
+      '<div class="field"><label>Price (PKR)</label><input id="ed-price" type="number" min="0" step="1" value="' + esc(draft.price) + '"></div>' +
+      '<div class="field"><label>Badge</label><select id="ed-badge"><option value="">None</option>' +
+      '<option' + (draft.badge === 'Hot' ? ' selected' : '') + '>Hot</option>' +
+      '<option' + (draft.badge === 'Best Seller' ? ' selected' : '') + '>Best Seller</option></select></div>' +
+      '</div>' +
+      '<span class="check" style="margin-bottom:12px"><input id="ed-feat" type="checkbox"' + (draft.featured ? ' checked' : '') + '><span>Show in homepage “Best sellers”</span></span>' +
+      '<div class="field"><label>Short description (one line)</label><textarea id="ed-short" rows="2">' + esc(draft.short) + '</textarea></div>' +
+      '<div class="field"><label>Key benefits (one per line)</label><textarea id="ed-desc" rows="4">' + esc((draft.description || []).join('\n')) + '</textarea></div>' +
+      '<div class="field"><label>Suitable crops (comma separated)</label><input id="ed-crops" value="' + esc((draft.crops || []).join(', ')) + '"></div>' +
+      '<div style="display:flex;gap:8px;margin-top:10px"><button class="btn" id="ed-save">Save product</button>' +
+      '<button class="btn ghost" id="ed-cancel">Cancel</button></div></div>';
+    $('tab-host').innerHTML = html;
+
+    $('ed-save').onclick = function () {
+      var name = $('ed-name').value.trim();
+      if (!name) return msg('Product name is required', true);
+      var slug = $('ed-slug').value.trim() || slugify(name);
+      if (f.products.some(function (p, j) { return j !== idx && p.slug === slug; })) return msg('That slug already exists — change it', true);
+      var obj = {
+        slug: slug,
+        name: name,
+        category: $('ed-cat').value,
+        pack: $('ed-pack').value.trim(),
+        price: parseFloat($('ed-price').value) || 0,
+        badge: $('ed-badge').value || null,
+        featured: $('ed-feat').checked,
+        short: $('ed-short').value.trim(),
+        description: $('ed-desc').value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean),
+        crops: $('ed-crops').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean)
+      };
+      if (idx == null) f.products.push(obj); else f.products[idx] = obj;
+      renderProductsTab();
+      msg('Product saved locally — press “Save products to GitHub” to publish');
+    };
+    $('ed-cancel').onclick = function () { renderProductsTab(); };
+  }
+
+  // ---------- site & contact ----------
+  var SITE_FIELDS = [
+    ['name', 'Business name used across the site'],
+    ['shortName', 'Short acronym (logo area)'],
+    ['tagline', 'Short tagline used in page titles'],
+    ['whatsapp', 'Digits only, international — e.g. 923245764838'],
+    ['phoneDisplay', 'Shown on the site — e.g. +92 324 5764838'],
+    ['phoneHref', 'Same number, no spaces — e.g. +923245764838'],
+    ['email', 'Public contact email'],
+    ['address', 'Full postal address'],
+    ['hours', 'Business hours text']
+  ];
+  function renderSiteTab() {
+    var s = state.files.site;
+    var html = '<div class="panel"><h2>Site &amp; contact details</h2>' +
+      '<p class="muted" style="margin-bottom:14px">These power the top bar, footer, contact page and every WhatsApp order button.</p><div class="grid2">';
+    SITE_FIELDS.forEach(function (pair) {
+      var key = pair[0];
+      html += '<div class="field"><label>' + pretty(key) + ' <span class="hint">' + pair[1] + '</span></label>' +
+        '<input id="site-' + key + '" value="' + esc(s[key] == null ? '' : s[key]) + '"></div>';
+    });
+    html += '</div><button class="btn" id="save-site">Save site details to GitHub</button></div>';
+    $('tab-host').innerHTML = html;
+    $('save-site').onclick = function () {
+      SITE_FIELDS.forEach(function (pair) { state.files.site[pair[0]] = $('site-' + pair[0]).value.trim(); });
+      var wa = state.files.site.whatsapp.replace(/\D/g, '');
+      if (wa.length < 8) return msg('WhatsApp must be digits in international format, e.g. 923245764838', true);
+      state.files.site.whatsapp = wa;
+      saveFile('site');
+    };
+  }
+
+  // ---------- raw JSON ----------
+  function renderJsonTab() {
+    var html = '<div class="panel"><h2>Raw JSON</h2><p class="muted">Advanced editing. Valid JSON is required; invalid input is rejected before saving.</p>' +
+      '<div class="field"><label>File</label><select id="raw-file">' +
+      '<option value="content">content.json — all site text</option>' +
+      '<option value="products">products.json — product catalog</option>' +
+      '<option value="site">site.json — contact details</option></select></div>' +
+      '<div class="field"><label>Content</label><textarea id="raw-body" rows="24"></textarea></div>' +
+      '<div style="display:flex;gap:8px"><button class="btn ghost" id="raw-validate">Validate</button>' +
+      '<button class="btn" id="raw-save">Save to GitHub</button></div></div>';
+    $('tab-host').innerHTML = html;
+    var sel = $('raw-file');
+    function show() { $('raw-body').value = JSON.stringify(state.files[sel.value], null, 2); }
+    sel.onchange = show;
+    show();
+    $('raw-validate').onclick = function () {
+      try {
+        var parsed = JSON.parse($('raw-body').value);
+        if (sel.value === 'products' && (!parsed.products || !Array.isArray(parsed.products))) throw new Error('needs { products: [...] }');
+        window.__rawValid = parsed;
+        msg('Valid JSON ✓');
+      } catch (e) { msg('Invalid JSON: ' + e.message, true); }
+    };
+    $('raw-save').onclick = function () {
+      try {
+        var parsed = JSON.parse($('raw-body').value);
+        if (sel.value === 'products' && (!parsed.products || !Array.isArray(parsed.products))) throw new Error('needs { products: [...] }');
+        var files = {};
+        files['src/data/' + sel.value + '.json'] = parsed;
+        state.files[sel.value] = parsed;
+        saveFile(sel.value);
+      } catch (e) { msg('Invalid JSON: ' + e.message, true); }
+    };
+  }
+
+  // ---------- tabs & save ----------
+  function renderTab() {
+    var host = $('tab-host');
+    if (tab === 'home') renderTextTab(['home']);
+    else if (tab === 'about') renderTextTab(['aboutPage']);
+    else if (tab === 'pages') renderTextTab(['nav', 'ui', 'productsPage', 'productPage', 'contactPage', 'footer']);
+    else if (tab === 'products') renderProductsTab();
+    else if (tab === 'site') renderSiteTab();
+    else renderJsonTab();
+  }
+  function switchTab(next) {
+    tab = next;
+    document.querySelectorAll('.tabs button').forEach(function (b) {
+      b.classList.toggle('on', b.dataset.tab === next);
+    });
+    renderTab();
+  }
+  function saveCurrentTab() {
+    if (tab === 'products') saveFile('products');
+    else if (tab === 'site') saveFile('site');
+    else if (tab === 'json') {
+      var saveBtn = $('raw-save');
+      if (saveBtn) saveBtn.click();
+      else msg('Open the Raw JSON tab to save it', true);
+    } else saveFile('content');
+  }
+
+  // ---------- events ----------
+  $('unlock').onclick = unlock;
+  $('pw').addEventListener('keydown', function (e) { if (e.key === 'Enter') unlock(); });
+  document.querySelectorAll('.tabs button').forEach(function (b) {
+    b.onclick = function () { switchTab(b.dataset.tab); };
+  });
+  $('btn-save').onclick = saveCurrentTab;
+  $('btn-reload').onclick = function () {
+    api({ action: 'state' }).then(function (res) {
+      if (!res.ok) return msg(res.error || 'Reload failed', true);
+      state.files = res.files;
+      state.shas = res.shas;
+      renderTab();
+      msg('Reloaded latest content from the repository');
+    });
+  };
+  $('btn-logout').onclick = function () {
+    sessionStorage.removeItem('acpw');
+    location.reload();
+  };
+
+  if (pw) {
+    api({ action: 'state' }).then(function (res) {
+      if (res.ok) {
+        state.files = res.files;
+        state.shas = res.shas;
+        $('login').classList.add('hidden');
+        $('app').classList.remove('hidden');
+        renderTab();
+        msg('Welcome back.');
+      } else {
+        sessionStorage.removeItem('acpw');
+        pw = '';
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>
