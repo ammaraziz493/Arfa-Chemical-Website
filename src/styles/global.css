@@ -219,6 +219,13 @@ section { padding: 72px 0; }
 .fchip.on { background: var(--blue); border-color: var(--blue); color: #fff; }
 .result-count { text-align: center; color: var(--ink-soft); font-size: 14px; margin: -20px 0 24px; }
 
+/* ---------- product photos ---------- */
+.pcard-art img { object-fit: cover; }
+.pd-art img { width: 100%; height: auto; display: block; padding: 18px; }
+.hero-stage svg, .hero-stage img { width: 100%; height: auto; display: block; }
+.hero-stage img.hero-img { border-radius: 14px; }
+.pd-art svg { width: 100%; height: auto; display: block; }
+
 /* ---------- product detail ---------- */
 .pd-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 44px; align-items: start; }
 .pd-art { border-radius: 22px; overflow: hidden; background: #fff; border: 1px solid var(--line); position: sticky; top: 110px; }

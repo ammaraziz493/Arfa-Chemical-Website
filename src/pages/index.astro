@@ -38,7 +38,9 @@ const advice = 'Assalam-o-Alaikum! I need help choosing the right product for my
       <div class="hero-visual">
         <div class="hero-float f1"><span class="fdot"></span>{H.float1.title}<small>{H.float1.sub}</small></div>
         <div class="hero-stage">
-          <ProductArt product={heroProduct} />
+          {heroProduct?.image
+            ? <img class="hero-img" src={heroProduct.image} alt={heroProduct.name} />
+            : <ProductArt product={heroProduct} />}
         </div>
         <div class="hero-float f2"><Icon name="leaf" size={18} /> {H.float2.title}<small>{PRODUCTS.length} {H.float2.sub}</small></div>
       </div>

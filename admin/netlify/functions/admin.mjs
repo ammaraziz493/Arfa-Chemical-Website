@@ -145,6 +145,10 @@ function normalizeProducts(data) {
   const seen = new Set();
   const slugify = (s) =>
     String(s).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const validImage = (p) =>
+    typeof p === 'string' && /^\/images\/products\/[a-z0-9][a-z0-9-]*\.(png|jpe?g|webp)$/i.test(p)
+      ? p
+      : null;
   const products = data.products.map((p, i) => {
     let slug = slugify(p.slug) || slugify(p.name) || `product-${i + 1}`;
     if (seen.has(slug)) slug = `${slug}-${i + 1}`;
@@ -161,6 +165,7 @@ function normalizeProducts(data) {
       short: String(p.short ?? ''),
       description: (Array.isArray(p.description) ? p.description : []).map(String),
       crops: (Array.isArray(p.crops) ? p.crops : []).map(String),
+      image: validImage(p.image),
     };
   });
   return { categories: cats, products };
@@ -220,6 +225,49 @@ async function handleSave(token, repo, branch, body) {
   };
 }
 
+async function handleImage(body, token, repo, branch) {
+  const IMAGE_DIR = 'images/products/';
+  const validName = /^[a-z0-9][a-z0-9-]*\.(png|jpe?g|webp)$/i;
+  const name = String(body.name || '');
+  if (!validName.test(name)) {
+    throw new Error('Image name must be lowercase letters/numbers/hyphens with .png/.jpg/.jpeg/.webp');
+  }
+  const path = IMAGE_DIR + name;
+  const filePath = `/repos/${repo}/contents/${encodeURI(path)}`;
+
+  // find existing file sha (404 = new file)
+  const existing = await gh(filePath, token).catch((e) => {
+    if (/Not Found/.test(e.message)) return null;
+    throw e;
+  });
+
+  if (body.remove) {
+    if (existing) {
+      await gh(filePath, token, {
+        method: 'DELETE',
+        body: JSON.stringify({ message: `Admin delete image ${path}`, sha: existing.sha }),
+      });
+    }
+    return { removed: true };
+  }
+
+  const data = String(body.data || '').replace(/\s+/g, '');
+  if (!/^[A-Za-z0-9+/=]+$/.test(data)) throw new Error('Image data is not valid base64');
+  const size = Buffer.byteLength(data, 'base64');
+  if (size > 3 * 1024 * 1024) throw new Error('Image too large after compression (max 3 MB) — try a smaller photo');
+  if (size < 100) throw new Error('Image appears empty');
+
+  await gh(filePath, token, {
+    method: 'PUT',
+    body: JSON.stringify({
+      message: `Admin image ${path}`,
+      content: data,
+      sha: existing ? existing.sha : undefined,
+    }),
+  });
+  return { path: '/' + path };
+}
+
 export default async function handler(event) {
   try {
     // Detect API style: Netlify v2 passes a Request-like object (method/json),
@@ -245,7 +293,9 @@ export default async function handler(event) {
       }
     }
     const action = body.action;
-    if (action !== 'state' && action !== 'save') return jsonResponse(400, { ok: false, error: 'Unknown action' });
+    if (!['state', 'save', 'image'].includes(action)) {
+      return jsonResponse(400, { ok: false, error: 'Unknown action' });
+    }
 
     gate();
     if (!passwordOk(body.password)) {
@@ -261,6 +311,10 @@ export default async function handler(event) {
     if (action === 'state') {
       const { files, shas } = await handleState(token, repo, branch);
       return jsonResponse(200, { ok: true, files, shas });
+    }
+    if (action === 'image') {
+      const out = await handleImage(body, token, repo, branch);
+      return jsonResponse(200, { ok: true, ...out });
     }
     const out = await handleSave(token, repo, branch, body);
     return jsonResponse(200, { ok: true, ...out });

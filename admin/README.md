@@ -45,8 +45,21 @@ Netlify → your site → **Site configuration → Environment variables** — a
 | File | What it controls |
 |---|---|
 | `src/data/content.json` | All website text: homepage, about, product pages, footer, nav, buttons |
-| `src/data/products.json` | Product catalog: categories, products (add / edit / delete) |
+| `src/data/products.json` | Product catalog: categories, products (add / edit / delete) + each product's `image` path |
 | `src/data/site.json` | Contact details: WhatsApp, phone, email, address, hours, tagline |
+
+## Product photos
+- In **Products → Edit/New product** press **“Choose photo…”** — the photo is
+  compressed in your browser (max ~1400 px, JPEG, ~1–2 MB) then uploaded to the
+  GitHub repo at `public/images/products/<slug>.jpg`.
+- Products with a photo show it on the product card, the detail page and the
+  homepage best-seller visual. Products without a photo keep the automatic
+  brand-colored artwork.
+- Uploads are saved instantly to GitHub (one commit per photo); the product JSON
+  still needs its own **“Save products to GitHub”** to point at the new photo.
+- Deleting a product (or removing its photo) also deletes the file from the repo.
+- The `GITHUB_TOKEN` needs **Contents: Read and write** — the same permission used
+  for JSON edits covers image files too.
 
 ## Security notes (be honest about limits)
 - The password and GitHub token are **never sent to the browser** — password goes to the

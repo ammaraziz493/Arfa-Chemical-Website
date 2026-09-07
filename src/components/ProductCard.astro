@@ -9,7 +9,9 @@ const href = `/products/${product.slug}/`;
 ---
 <article class="pcard" data-cat={product.category} data-name={product.name.toLowerCase()}>
   <a href={href} class="pcard-art" aria-label={product.name}>
-    <ProductArt product={product} />
+    {product.image
+      ? <img src={product.image} alt={product.name} loading="lazy" />
+      : <ProductArt product={product} />}
     {product.badge && (
       <span class={product.badge === 'Hot' ? 'badge hot' : 'badge best'}>{product.badge}</span>
     )}

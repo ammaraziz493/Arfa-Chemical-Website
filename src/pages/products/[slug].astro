@@ -64,7 +64,9 @@ const breadcrumbJsonLd = {
     <div class="container">
       <div class="pd-grid">
         <div class="pd-art">
-          <ProductArt product={product} />
+          {product.image
+            ? <img src={product.image} alt={product.name} />
+            : <ProductArt product={product} />}
         </div>
 
         <div class="pd-info">
