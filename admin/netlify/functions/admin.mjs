@@ -226,14 +226,17 @@ async function handleSave(token, repo, branch, body) {
 }
 
 async function handleImage(body, token, repo, branch) {
-  const IMAGE_DIR = 'images/products/';
+  // IMPORTANT: Astro only copies public/ into the built site, so image files MUST
+  // be committed under public/ — even though their public URL is /images/products/...
+  const IMAGE_DIR = 'public/images/products/';
+  const URL_DIR = '/images/products/';
   const validName = /^[a-z0-9][a-z0-9-]*\.(png|jpe?g|webp)$/i;
   const name = String(body.name || '');
   if (!validName.test(name)) {
     throw new Error('Image name must be lowercase letters/numbers/hyphens with .png/.jpg/.jpeg/.webp');
   }
-  const path = IMAGE_DIR + name;
-  const filePath = `/repos/${repo}/contents/${encodeURI(path)}`;
+  const repoPath = IMAGE_DIR + name;
+  const filePath = `/repos/${repo}/contents/${encodeURI(repoPath)}`;
 
   // find existing file sha (404 = new file)
   const existing = await gh(filePath, token).catch((e) => {
@@ -245,7 +248,7 @@ async function handleImage(body, token, repo, branch) {
     if (existing) {
       await gh(filePath, token, {
         method: 'DELETE',
-        body: JSON.stringify({ message: `Admin delete image ${path}`, sha: existing.sha }),
+        body: JSON.stringify({ message: `Admin delete image ${repoPath}`, sha: existing.sha }),
       });
     }
     return { removed: true };
@@ -260,12 +263,12 @@ async function handleImage(body, token, repo, branch) {
   await gh(filePath, token, {
     method: 'PUT',
     body: JSON.stringify({
-      message: `Admin image ${path}`,
+      message: `Admin image ${repoPath}`,
       content: data,
       sha: existing ? existing.sha : undefined,
     }),
   });
-  return { path: '/' + path };
+  return { path: URL_DIR + name };
 }
 
 export default async function handler(event) {
