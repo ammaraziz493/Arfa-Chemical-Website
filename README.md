@@ -30,7 +30,7 @@ green accents) is derived from the logo.
 
 The site ships with a password-protected admin panel — **all its code lives in the
 `admin/` package** (`admin/netlify/functions/admin.mjs` + `ui.html`), routed by
-`netlify.toml` to **`/admin-password`**.
+`netlify.toml` to **`/admin`**.
 
 Edits commit JSON to the GitHub repo → Netlify rebuilds (~1 min). Needs 3 environment
 variables on Netlify: `ADMIN_PASSWORD`, `GITHUB_TOKEN` (fine-grained, Contents read+write),

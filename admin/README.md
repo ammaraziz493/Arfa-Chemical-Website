@@ -13,10 +13,10 @@ admin/
 
 The website only knows about it through **two small lines at the repo root**:
 `netlify.toml` (points Netlify at this function folder) and a redirect that maps
-`/admin-password` → the function.
+`/admin` → the function.
 
 ## How it works
-1. You open **`https://arfachemicals.dpdns.org/admin-password`**
+1. You open **`https://arfachemicals.dpdns.org/admin`**
 2. Type the admin password → the function checks it **on the server** (never in the browser)
 3. The panel loads the live content from your GitHub repo (`src/data/*.json`)
 4. You edit any text or manage products → **Save** commits the JSON back to GitHub
@@ -27,7 +27,7 @@ Netlify → your site → **Site configuration → Environment variables** — a
 
 | Variable | Value |
 |---|---|
-| `ADMIN_PASSWORD` | The password you type at `/admin-password` (use something strong) |
+| `ADMIN_PASSWORD` | The password you type at `/admin` (use something strong) |
 | `GITHUB_TOKEN` | GitHub Personal Access Token — see below |
 | `GITHUB_REPO` | `yourusername/arfa-chemicals` (owner + repo name) |
 | `GITHUB_BRANCH` | *(optional — defaults to `main`)* |
@@ -55,7 +55,7 @@ Netlify → your site → **Site configuration → Environment variables** — a
 - This is a **single-password admin** suited to a small business site. If you later need
   per-user accounts, audit trails, or an image uploader, the natural upgrade is Supabase
   auth + storage (or Decap CMS) — say the word and I'll migrate.
-- The panel is excluded from search: `robots.txt` disallows `/admin-password`, the page is
+- The panel is excluded from search: `robots.txt` disallows `/admin`, the page is
   `noindex`, and the function replies with `X-Robots-Tag: noindex`.
 
 ## Local testing

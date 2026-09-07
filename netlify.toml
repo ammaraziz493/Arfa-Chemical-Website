@@ -9,15 +9,15 @@
   node_bundler = "esbuild"
   included_files = ["admin/netlify/functions/ui.html"]
 
-# Pretty URL for the admin panel → serverless function (keeps /admin-password in the address bar)
+# Pretty URL for the admin panel → serverless function (keeps /admin in the address bar)
 [[redirects]]
-  from = "/admin-password"
+  from = "/admin"
   to = "/.netlify/functions/admin"
   status = 200
   force = true
 
 # Never let a crawler find the admin page (belt & braces: function also sends X-Robots-Tag)
 [[headers]]
-  for = "/admin-password"
+  for = "/admin"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"

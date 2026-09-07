@@ -1,8 +1,8 @@
 // ============================================================
 // Arfa Chemicals — Admin (admin package / Netlify function)
 // ------------------------------------------------------------
-// GET  /admin-password  → serves admin/netlify/functions/ui.html
-// POST /admin-password  → action 'state' (read repo files)
+// GET  /admin  → serves admin/netlify/functions/ui.html
+// POST /admin  → action 'state' (read repo files)
 //                       → action 'save'  (commit new JSON → Netlify rebuilds)
 //
 // Secrets live ONLY as Netlify environment variables (never shipped to the browser):
@@ -12,11 +12,43 @@
 //   GITHUB_BRANCH   — optional, defaults to "main"
 // ============================================================
 import { createHash, timingSafeEqual } from 'node:crypto';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
-const UI_PATH = fileURLToPath(new URL('ui.html', import.meta.url));
-const UI_CACHE = readFileSync(UI_PATH, 'utf8');
+// ui.html ships inside the function bundle (netlify.toml → included_files).
+// Try every plausible location so it works locally AND on Netlify's v2 runtime.
+const CANDIDATES = [
+  fileURLToPath(new URL('ui.html', import.meta.url)),
+  path.join(process.cwd(), 'ui.html'),
+  path.join(process.cwd(), 'netlify', 'functions', 'ui.html'),
+];
+function loadUi() {
+  for (const p of CANDIDATES) {
+    try {
+      if (existsSync(p)) return readFileSync(p, 'utf8');
+    } catch {
+      /* try next */
+    }
+  }
+  return '<!doctype html><meta charset="utf-8"><title>Admin</title><body style="font-family:sans-serif;padding:40px"><h2>Admin UI missing</h2><p>The ui.html file was not found next to the function. Check <code>included_files</code> in netlify.toml and redeploy.</p></body>';
+}
+const UI_CACHE = loadUi();
+
+const COMMON_HEADERS = {
+  'Cache-Control': 'no-store',
+  'X-Robots-Tag': 'noindex, nofollow',
+};
+const jsonResponse = (status, obj) =>
+  new Response(JSON.stringify(obj), {
+    status,
+    headers: { 'Content-Type': 'application/json', ...COMMON_HEADERS },
+  });
+const htmlResponse = (status, html) =>
+  new Response(html, {
+    status,
+    headers: { 'Content-Type': 'text/html; charset=utf-8', ...COMMON_HEADERS },
+  });
 
 const FILES = {
   'src/data/content.json': 'content',
@@ -189,30 +221,36 @@ async function handleSave(token, repo, branch, body) {
 }
 
 export default async function handler(event) {
-  const respond = (status, body, contentType = 'application/json') => ({
-    statusCode: status,
-    headers: {
-      'Content-Type': contentType,
-      'Cache-Control': 'no-store',
-      'X-Robots-Tag': 'noindex, nofollow',
-    },
-    body: contentType.includes('html') ? body : JSON.stringify(body),
-  });
-
   try {
-    if (event.httpMethod === 'GET' || event.httpMethod === undefined) {
-      return respond(200, UI_CACHE, 'text/html; charset=utf-8');
-    }
-    if (event.httpMethod !== 'POST') return respond(405, { ok: false, error: 'Method not allowed' });
+    // Detect API style: Netlify v2 passes a Request-like object (method/json),
+    // local tests use the old shape (httpMethod/body). Support both.
+    const isV2 = !(event && typeof event.httpMethod === 'string');
+    const method = String(isV2 ? event.method || 'GET' : event.httpMethod).toUpperCase();
 
-    const body = JSON.parse(event.body || '{}');
+    if (method === 'GET') return htmlResponse(200, UI_CACHE);
+    if (method !== 'POST') return jsonResponse(405, { ok: false, error: 'Method not allowed' });
+
+    let body = {};
+    if (isV2) {
+      try {
+        body = await event.json();
+      } catch {
+        body = {};
+      }
+    } else {
+      try {
+        body = JSON.parse(event.body || '{}');
+      } catch {
+        body = {};
+      }
+    }
     const action = body.action;
-    if (action !== 'state' && action !== 'save') return respond(400, { ok: false, error: 'Unknown action' });
+    if (action !== 'state' && action !== 'save') return jsonResponse(400, { ok: false, error: 'Unknown action' });
 
     gate();
     if (!passwordOk(body.password)) {
       noteFail();
-      return respond(401, { ok: false, error: 'Wrong password.' });
+      return jsonResponse(401, { ok: false, error: 'Wrong password.' });
     }
     noteOk();
 
@@ -222,10 +260,10 @@ export default async function handler(event) {
 
     if (action === 'state') {
       const { files, shas } = await handleState(token, repo, branch);
-      return respond(200, { ok: true, files, shas });
+      return jsonResponse(200, { ok: true, files, shas });
     }
     const out = await handleSave(token, repo, branch, body);
-    return respond(200, { ok: true, ...out });
+    return jsonResponse(200, { ok: true, ...out });
   } catch (err) {
     const msg = err && err.message ? err.message : 'Unexpected error';
     const status = /Missing Netlify environment variable/.test(msg)
@@ -235,6 +273,6 @@ export default async function handler(event) {
         : /Wrong password/.test(msg)
           ? 401
           : 400;
-    return respond(status, { ok: false, error: msg });
+    return jsonResponse(status, { ok: false, error: msg });
   }
 }
