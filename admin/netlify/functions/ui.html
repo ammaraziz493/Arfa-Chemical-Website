@@ -372,7 +372,8 @@
       html += renderSection('contactPage', 'Contact page');
       html += renderSection('footer', 'Footer (bottom of every page)');
     } else {
-      html += renderSection(tabName);
+      // 'about' tab → content section key is 'aboutPage'
+      html += renderSection(tabName === 'about' ? 'aboutPage' : tabName);
     }
     $('tab-host').innerHTML = html;
     bindTextEvents(tabName);
