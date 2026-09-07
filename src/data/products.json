@@ -1,10 +1,29 @@
 {
   "categories": [
-    { "slug": "fertilizers", "name": "Fertilizers" },
-    { "slug": "insecticides", "name": "Insecticides" },
-    { "slug": "fungicides", "name": "Fungicides" },
-    { "slug": "seed-treatment", "name": "Seed Treatment" },
-    { "slug": "biologicals", "name": "Biologicals" }
+    {
+      "slug": "fertilizers",
+      "name": "Fertilizers"
+    },
+    {
+      "slug": "insecticides",
+      "name": "Insecticides"
+    },
+    {
+      "slug": "fungicides",
+      "name": "Fungicides"
+    },
+    {
+      "slug": "seed-treatment",
+      "name": "Seed Treatment"
+    },
+    {
+      "slug": "biologicals",
+      "name": "Biologicals"
+    },
+    {
+      "slug": "testing",
+      "name": "testing"
+    }
   ],
   "products": [
     {
@@ -21,7 +40,13 @@
         "Ideal top dressing for wheat, rice, sugarcane and cotton",
         "Free-flowing, high-purity prills for even spreading"
       ],
-      "crops": ["Wheat", "Rice", "Sugarcane", "Cotton", "Maize"]
+      "crops": [
+        "Wheat",
+        "Rice",
+        "Sugarcane",
+        "Cotton",
+        "Maize"
+      ]
     },
     {
       "slug": "arfa-npk-15-15-15",
@@ -37,7 +62,12 @@
         "Suitable as a base dose for vegetables, orchards and field crops",
         "Improves yield and produce quality across the season"
       ],
-      "crops": ["Vegetables", "Fruit Orchards", "Cotton", "Potato"]
+      "crops": [
+        "Vegetables",
+        "Fruit Orchards",
+        "Cotton",
+        "Potato"
+      ]
     },
     {
       "slug": "arfa-dap-18-46",
@@ -53,7 +83,12 @@
         "Recommended as a sowing-time base dose",
         "Boosts tillering, flowering and early crop vigour"
       ],
-      "crops": ["Wheat", "Canola", "Cotton", "Sugarcane"]
+      "crops": [
+        "Wheat",
+        "Canola",
+        "Cotton",
+        "Sugarcane"
+      ]
     },
     {
       "slug": "arfa-zinc-sulphate-33",
@@ -69,7 +104,12 @@
         "Prevents leaf yellowing and stunted growth in rice and maize",
         "Water-soluble — easy soil or foliar application"
       ],
-      "crops": ["Rice", "Maize", "Wheat", "Citrus"]
+      "crops": [
+        "Rice",
+        "Maize",
+        "Wheat",
+        "Citrus"
+      ]
     },
     {
       "slug": "arfa-humic-acid-98",
@@ -85,7 +125,11 @@
         "Improves nutrient uptake and water retention",
         "Compatible with most fertilizers and pesticides"
       ],
-      "crops": ["All Crops", "Vegetables", "Orchards"]
+      "crops": [
+        "All Crops",
+        "Vegetables",
+        "Orchards"
+      ]
     },
     {
       "slug": "arfa-biostimulant-gold",
@@ -101,7 +145,13 @@
         "Helps plants recover from heat, drought and stress",
         "Improves flowering, fruit set and overall yield"
       ],
-      "crops": ["Cotton", "Wheat", "Rice", "Vegetables", "Fruit"]
+      "crops": [
+        "Cotton",
+        "Wheat",
+        "Rice",
+        "Vegetables",
+        "Fruit"
+      ]
     },
     {
       "slug": "arfa-insect-killer-20ec",
@@ -117,7 +167,12 @@
         "Quick knock-down with long-lasting protection",
         "Safe when used at recommended doses on listed crops"
       ],
-      "crops": ["Cotton", "Chilli", "Vegetables", "Rice"]
+      "crops": [
+        "Cotton",
+        "Chilli",
+        "Vegetables",
+        "Rice"
+      ]
     },
     {
       "slug": "arfa-cotton-booster-46ec",
@@ -133,7 +188,9 @@
         "Effective against bollworms and sucking pest complex",
         "Rotate with other chemistries for resistance management"
       ],
-      "crops": ["Cotton"]
+      "crops": [
+        "Cotton"
+      ]
     },
     {
       "slug": "arfa-crop-fungicide-25sc",
@@ -149,7 +206,13 @@
         "Systemic action protects new growth",
         "Improves grain filling and final harvest quality"
       ],
-      "crops": ["Wheat", "Rice", "Potato", "Onion", "Tomato"]
+      "crops": [
+        "Wheat",
+        "Rice",
+        "Potato",
+        "Onion",
+        "Tomato"
+      ]
     },
     {
       "slug": "arfa-seed-dressing-30fs",
@@ -165,7 +228,24 @@
         "Improves germination and uniform stand",
         "Ready-to-use flowable concentrate for easy dressing"
       ],
-      "crops": ["Wheat", "Cotton", "Maize", "Sunflower"]
+      "crops": [
+        "Wheat",
+        "Cotton",
+        "Maize",
+        "Sunflower"
+      ]
+    },
+    {
+      "slug": "testing",
+      "name": "testing",
+      "category": "fertilizers",
+      "pack": "456",
+      "price": 4567,
+      "badge": "Hot",
+      "featured": true,
+      "short": "",
+      "description": [],
+      "crops": []
     }
   ]
 }
