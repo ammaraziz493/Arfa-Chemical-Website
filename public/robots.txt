@@ -4,5 +4,6 @@
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /admin.html
 
-Sitemap: https://arfachemicals.dpdns.org/sitemap-index.xml
+Sitemap: https://arfachemicals.me/sitemap-index.xml

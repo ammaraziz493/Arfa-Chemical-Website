@@ -108,6 +108,34 @@ Netlify's free **Forms** can replace the WhatsApp form if you prefer email deliv
 **Or without git:** `npm run build`, then drag-and-drop the `dist/` folder onto
 dash.cloudflare.com → Pages → Create → Direct Upload (or netlify.com/drop).
 
+## Cloudflare Pages (dev branch — Cloudflare support)
+
+Cloudflare support lives **only in the `dev` branch** (main stays on Netlify until cutover).
+It works alongside the Netlify version — one codebase, two hosts.
+
+- **Static site**: unchanged Astro build → `dist/`
+- **Admin UI**: build step copies `admin/netlify/functions/ui.html` → `public/admin.html`
+  (`admin/scripts/copy-ui.mjs`, wired into `package.json` `prebuild`) — served by Pages
+  Functions at **`/admin`** via `env.ASSETS`
+- **Admin backend**: `functions/admin.js` at the repo root is a one-line adapter →
+  `admin/cloudflare/admin.js` (full handler: password gate, GitHub commits, product images)
+- **Env vars on Cloudflare Pages**: `ADMIN_PASSWORD`, `GITHUB_TOKEN`, `GITHUB_REPO`,
+  `GITHUB_BRANCH` — identical names to Netlify
+- Production URL is set in `astro.config.mjs` (`https://arfachemicals.me`) — canonical links,
+  sitemap and robots all follow it
+
+### Files that are Cloudflare/dev-only (do not merge to main before cutover)
+| File | Why |
+|---|---|
+| `functions/admin.js` | new — Cloudflare adapter (doesn't exist on main) |
+| `admin/cloudflare/admin.js` | new — Cloudflare handler (doesn't exist on main) |
+| `admin/scripts/copy-ui.mjs` | new — UI copy step (doesn't exist on main) |
+| `package.json` | `prebuild` copies the admin UI |
+| `astro.config.mjs` | `site:` → `arfachemicals.me` (main still points at dpdns) |
+| `public/robots.txt` | sitemap URL → `arfachemicals.me` |
+| `admin/netlify/functions/ui.html` | admin UI now calls `/admin` (works on both hosts) |
+
+
 ## Notes
 
 - The contact form and every "Order" button compose a pre-filled **WhatsApp message** — no

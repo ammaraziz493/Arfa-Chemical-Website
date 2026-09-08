@@ -123,7 +123,7 @@
 <script>
 (function () {
   'use strict';
-  var API = '/.netlify/functions/admin';
+  var API = '/admin'; // same URL on Netlify (redirect) and Cloudflare (Pages Function)
   var state = { files: null, shas: null, dirty: false, originals: null };
   var tab = 'home';
   var pw = sessionStorage.getItem('acpw') || '';

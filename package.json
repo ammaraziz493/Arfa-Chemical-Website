@@ -5,8 +5,9 @@
   "private": true,
   "description": "Arfa Chemicals — crop nutrition & protection product website (static, no backend).",
   "scripts": {
+    "prebuild": "node admin/scripts/copy-ui.mjs",
+    "build": "npm run prebuild && astro build",
     "dev": "astro dev",
-    "build": "astro build",
     "preview": "astro preview"
   },
   "dependencies": {
