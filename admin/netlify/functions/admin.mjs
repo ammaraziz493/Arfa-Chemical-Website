@@ -194,27 +194,38 @@ async function handleSave(token, repo, branch, body) {
   const incoming = body && typeof body.files === 'object' ? body.files : {};
   const paths = Object.keys(incoming).filter((p) => FILES[p]);
   if (!paths.length) throw new Error('Nothing to save — supply at least one known file path.');
+
+  // Always write against the CURRENT sha in the repo — never the browser's snapshot,
+  // which can be stale (second device, a lost reply after a successful save, ...).
+  async function putWithFreshSha(path, parsed, allowRetry) {
+    const current = await readRepoFile(path, token, repo, branch).catch(() => ({ sha: null, text: '{}' }));
+    const merged = path.endsWith('products.json')
+      ? parsed
+      : mergeDeep(JSON.parse(current.text || '{}'), parsed);
+    const content = Buffer.from(JSON.stringify(merged, null, 2) + '\n', 'utf8').toString('base64');
+    try {
+      return await gh(`/repos/${repo}/contents/${encodeURI(path)}`, token, {
+        method: 'PUT',
+        body: JSON.stringify({
+          message: `Admin update ${path}`,
+          content,
+          sha: current.sha || undefined,
+        }),
+      });
+    } catch (e) {
+      // lost a race with another writer — re-read and retry once
+      if (allowRetry && /does not match|422|409|conflict/i.test(e.message)) {
+        return putWithFreshSha(path, parsed, false);
+      }
+      throw e;
+    }
+  }
+
   const committed = [];
   const newShas = {};
   for (const path of paths) {
     const parsed = normalizeFile(path, incoming[path]);
-    let merged;
-    if (path.endsWith('products.json')) {
-      merged = parsed; // products are normalized wholesale
-    } else {
-      const current = await readRepoFile(path, token, repo, branch).catch(() => ({ sha: null, text: '{}' }));
-      merged = mergeDeep(JSON.parse(current.text || '{}'), parsed);
-    }
-    const content = Buffer.from(JSON.stringify(merged, null, 2) + '\n', 'utf8').toString('base64');
-    const sha = body.shas && body.shas[path] ? body.shas[path] : (await readRepoFile(path, token, repo, branch).catch(() => ({ sha: null }))).sha;
-    const put = await gh(`/repos/${repo}/contents/${encodeURI(path)}`, token, {
-      method: 'PUT',
-      body: JSON.stringify({
-        message: `Admin update ${path}`,
-        content,
-        sha: sha || undefined,
-      }),
-    });
+    const put = await putWithFreshSha(path, parsed, true);
     if (put && put.content && put.content.sha) newShas[path] = put.content.sha;
     committed.push(path);
   }
