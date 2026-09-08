@@ -38,6 +38,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: SITE.name,
+      alternateName: `${SITE.name} Multan`,
+      url: Astro.site,
+    })} />
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
       '@type': ['Organization', 'LocalBusiness'],
       name: SITE.name,
       url: Astro.site,
