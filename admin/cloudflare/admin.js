@@ -1,6 +1,6 @@
 // ============================================================
 // Arfa Chemicals — Admin handler for Cloudflare Pages Functions
-// (lives in the admin/ package; functions/admin.js at the repo
+// (lives in the admin/ package; functions/admin/index.js at the repo
 //  root is only a one-line adapter pointing here)
 // ------------------------------------------------------------
 // GET  /admin  → serves the admin UI (fetched from the static
@@ -242,7 +242,8 @@ async function handleImage(body, env, token, repo, branch) {
 // ---------- main handler ----------
 export async function handler(request, env) {
   try {
-    if (request.method === 'GET') return serveUi(request, env);
+    // serve the UI for both plain GET and HEAD (crawlers/probes send HEAD)
+    if (request.method === 'GET' || request.method === 'HEAD') return serveUi(request, env);
     if (request.method !== 'POST') return json(405, { ok: false, error: 'Method not allowed' });
 
     let body = {};

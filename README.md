@@ -117,7 +117,7 @@ It works alongside the Netlify version — one codebase, two hosts.
 - **Admin UI**: build step copies `admin/netlify/functions/ui.html` → `public/admin.html`
   (`admin/scripts/copy-ui.mjs`, wired into `package.json` `prebuild`) — served by Pages
   Functions at **`/admin`** via `env.ASSETS`
-- **Admin backend**: `functions/admin.js` at the repo root is a one-line adapter →
+- **Admin backend**: `functions/admin/index.js` at the repo root is a one-line adapter →
   `admin/cloudflare/admin.js` (full handler: password gate, GitHub commits, product images)
 - **Env vars on Cloudflare Pages**: `ADMIN_PASSWORD`, `GITHUB_TOKEN`, `GITHUB_REPO`,
   `GITHUB_BRANCH` — identical names to Netlify
@@ -127,7 +127,7 @@ It works alongside the Netlify version — one codebase, two hosts.
 ### Files that are Cloudflare/dev-only (do not merge to main before cutover)
 | File | Why |
 |---|---|
-| `functions/admin.js` | new — Cloudflare adapter (doesn't exist on main) |
+| `functions/admin/index.js` | new — Cloudflare adapter (doesn't exist on main) |
 | `admin/cloudflare/admin.js` | new — Cloudflare handler (doesn't exist on main) |
 | `admin/scripts/copy-ui.mjs` | new — UI copy step (doesn't exist on main) |
 | `package.json` | `prebuild` copies the admin UI |
