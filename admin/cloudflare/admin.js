@@ -198,6 +198,7 @@ async function handleSave(env, token, repo, branch, body) {
           message: `Admin update ${path}`,
           content,
           sha: current.sha || undefined,
+          branch, // CRITICAL: without this GitHub commits to the repo's DEFAULT branch
         }),
       });
     } catch (e) {
@@ -228,7 +229,7 @@ async function handleImage(body, env, token, repo, branch) {
   if (!validName.test(name)) throw new Error('Image name must be lowercase letters/numbers/hyphens with .png/.jpg/.jpeg/.webp');
   const repoPath = IMAGE_DIR + name;
   const filePath = `/repos/${repo}/contents/${encodeURI(repoPath)}`;
-  const existing = await gh(filePath, token).catch((e) => {
+  const existing = await gh(`${filePath}?ref=${encodeURI(branch)}`, token).catch((e) => {
     if (/Not Found/.test(e.message)) return null;
     throw e;
   });
@@ -236,7 +237,7 @@ async function handleImage(body, env, token, repo, branch) {
     if (existing) {
       await gh(filePath, token, {
         method: 'DELETE',
-        body: JSON.stringify({ message: `Admin delete image ${repoPath}`, sha: existing.sha }),
+        body: JSON.stringify({ message: `Admin delete image ${repoPath}`, sha: existing.sha, branch }),
       });
     }
     return { removed: true };
@@ -248,7 +249,7 @@ async function handleImage(body, env, token, repo, branch) {
   if (size < 100) throw new Error('Image appears empty');
   await gh(filePath, token, {
     method: 'PUT',
-    body: JSON.stringify({ message: `Admin image ${repoPath}`, content: data, sha: existing ? existing.sha : undefined }),
+    body: JSON.stringify({ message: `Admin image ${repoPath}`, content: data, sha: existing ? existing.sha : undefined, branch }),
   });
   return { path: URL_DIR + name };
 }

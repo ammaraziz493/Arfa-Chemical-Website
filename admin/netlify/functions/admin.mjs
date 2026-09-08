@@ -210,6 +210,7 @@ async function handleSave(token, repo, branch, body) {
           message: `Admin update ${path}`,
           content,
           sha: current.sha || undefined,
+          branch, // CRITICAL: without this GitHub commits to the repo's DEFAULT branch
         }),
       });
     } catch (e) {
@@ -249,8 +250,8 @@ async function handleImage(body, token, repo, branch) {
   const repoPath = IMAGE_DIR + name;
   const filePath = `/repos/${repo}/contents/${encodeURI(repoPath)}`;
 
-  // find existing file sha (404 = new file)
-  const existing = await gh(filePath, token).catch((e) => {
+  // find existing file sha ON THE SAME BRANCH (404 = new file)
+  const existing = await gh(`${filePath}?ref=${encodeURI(branch)}`, token).catch((e) => {
     if (/Not Found/.test(e.message)) return null;
     throw e;
   });
@@ -259,7 +260,7 @@ async function handleImage(body, token, repo, branch) {
     if (existing) {
       await gh(filePath, token, {
         method: 'DELETE',
-        body: JSON.stringify({ message: `Admin delete image ${repoPath}`, sha: existing.sha }),
+        body: JSON.stringify({ message: `Admin delete image ${repoPath}`, sha: existing.sha, branch }),
       });
     }
     return { removed: true };
@@ -277,6 +278,7 @@ async function handleImage(body, token, repo, branch) {
       message: `Admin image ${repoPath}`,
       content: data,
       sha: existing ? existing.sha : undefined,
+      branch,
     }),
   });
   return { path: URL_DIR + name };
