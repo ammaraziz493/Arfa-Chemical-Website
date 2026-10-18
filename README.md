@@ -21,7 +21,7 @@ green accents) is derived from the logo.
 - Homepage marketing copy is drafted copy to review.
 
 ### Real details already set (verified)
-- Call & WhatsApp: **0324 5764838** (`+92 324 5764838`)
+- Call & WhatsApp: **dummy placeholder** (`+92 000 0000000`) — replace when company registration is complete
 - Address: **China Chowk Industrial Estate, Multan**
 - About page: built from the company profile (incorporated 2025, unlisted public company,
   import & sale of agricultural products, crop protection + seeds distribution).
